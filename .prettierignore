@@ -1,0 +1,4 @@
+dist/
+custom_components/xiaomi_kettle/frontend/
+package-lock.json
+openspec/schemas/

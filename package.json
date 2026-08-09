@@ -1,0 +1,57 @@
+{
+  "name": "hass-xiaomi-kettle",
+  "version": "0.1.0",
+  "description": "A human-friendly Home Assistant integration and UI for Xiaomi Smart Kettle 2 Pro.",
+  "keywords": [
+    "home-assistant",
+    "hacs",
+    "lovelace",
+    "xiaomi",
+    "kettle"
+  ],
+  "homepage": "https://github.com/qweritos/hass-xiaomi-kettle#readme",
+  "bugs": "https://github.com/qweritos/hass-xiaomi-kettle/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qweritos/hass-xiaomi-kettle.git"
+  },
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "lint:python": "./scripts/run-ruff.sh",
+    "spec:validate": "openspec schema validate minimalist && openspec validate --specs --strict --no-interactive",
+    "test": "vitest run",
+    "test:python": "python3 -m unittest discover -s tests_python -p 'test_*.py'",
+    "typecheck": "tsc --noEmit",
+    "check:python": "python3 -m compileall -q custom_components && npm run lint:python && npm run test:python",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm test && npm run check:python && npm run spec:validate && npm run build"
+  },
+  "dependencies": {
+    "custom-card-helpers": "^2.0.0",
+    "lit": "^3.3.3"
+  },
+  "devDependencies": {
+    "@fission-ai/openspec": "^1.8.0",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.10.13",
+    "eslint": "^10.0.0",
+    "prettier": "^3.6.2",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.66.0",
+    "vite": "^8.2.1",
+    "vitest": "^4.1.10"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "files": [
+    "custom_components/xiaomi_kettle",
+    "README.md",
+    "LICENSE"
+  ]
+}

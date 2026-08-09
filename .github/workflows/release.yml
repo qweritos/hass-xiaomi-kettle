@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - run: npm ci
+      - run: python -m pip install ruff
+      - run: npm run check
+      - name: Package integration
+        run: >-
+          zip -r xiaomi_kettle.zip custom_components/xiaomi_kettle
+          -x '*/__pycache__/*' '*.pyc'
+      - name: Publish release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release delete-asset "$GITHUB_REF_NAME" xiaomi-kettle-card.js --yes || true
+            gh release upload "$GITHUB_REF_NAME" xiaomi_kettle.zip --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" xiaomi_kettle.zip --verify-tag --generate-notes --title "$GITHUB_REF_NAME"
+          fi

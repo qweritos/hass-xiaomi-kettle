@@ -1,0 +1,13 @@
+{
+  "domain": "xiaomi_kettle",
+  "name": "Xiaomi Kettle",
+  "after_dependencies": ["xiaomi_miot"],
+  "codeowners": ["@qweritos"],
+  "config_flow": true,
+  "dependencies": ["frontend", "http", "lovelace", "persistent_notification"],
+  "documentation": "https://github.com/qweritos/hass-xiaomi-kettle",
+  "integration_type": "helper",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/qweritos/hass-xiaomi-kettle/issues",
+  "version": "0.1.0"
+}

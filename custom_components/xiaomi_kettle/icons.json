@@ -1,0 +1,20 @@
+{
+  "config": {
+    "step": {
+      "notifications": {
+        "sections": {
+          "preset_icons": "mdi:palette-outline"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "sections": {
+          "preset_icons": "mdi:palette-outline"
+        }
+      }
+    }
+  }
+}

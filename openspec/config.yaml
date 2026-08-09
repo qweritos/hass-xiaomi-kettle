@@ -1,0 +1,18 @@
+schema: minimalist
+
+context: |
+  Product: Xiaomi Kettle for Home Assistant
+  Supported hardware: Xiaomi Smart Kettle 2 Pro (yunmi.kettle.v19)
+  Upstream connection: Xiaomi Miot remains the sole device transport
+  Backend: Home Assistant custom integration in Python
+  Frontend: TypeScript and Lit, bundled with Vite
+  Distribution: HACS integration repository and release ZIP
+
+rules:
+  specs:
+    - Express every requirement as a user story with a concrete user benefit.
+    - Express acceptance criteria as testable Given/When/Then scenarios.
+    - Specify observable product behavior; keep implementation detail only where it is a compatibility constraint.
+  tasks:
+    - Keep tasks small, ordered, and independently verifiable.
+    - Include targeted tests and Home Assistant compatibility checks for behavior changes.

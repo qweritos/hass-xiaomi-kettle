@@ -1,0 +1,99 @@
+{
+  "title": "Xiaomi Kettle",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Choose a Xiaomi Miot kettle",
+        "description": "Select the technical Xiaomi Miot kettle that should receive a clean, human-friendly device.",
+        "data": {
+          "source_entity": "Kettle"
+        }
+      },
+      "notifications": {
+        "title": "Notifications and preset icons",
+        "description": "Choose sidebar notification events and icons for programs discovered from Xiaomi Home.",
+        "data": {
+          "notify_events": "Notify when"
+        },
+        "sections": {
+          "preset_icons": {
+            "name": "Program icons",
+            "description": "Choose an icon for each preset. Preset names and automatic icon defaults come from the kettle."
+          }
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "This kettle is already configured.",
+      "no_devices": "No supported Xiaomi Miot kettles were found. Configure Xiaomi Miot and enable the kettle water-heater entity first."
+    },
+    "error": {
+      "device_unavailable": "The selected kettle is no longer available."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Kettle preferences",
+        "description": "Choose sidebar notification events and icons for programs discovered from Xiaomi Home.",
+        "data": {
+          "notify_events": "Notify when"
+        },
+        "sections": {
+          "preset_icons": {
+            "name": "Program icons",
+            "description": "Choose an icon for each preset. Preset names and automatic icon defaults come from the kettle."
+          }
+        }
+      }
+    }
+  },
+  "entity": {
+    "button": {
+      "start": { "name": "Start" },
+      "boil": { "name": "Boil" },
+      "stop": { "name": "Stop" }
+    },
+    "event": {
+      "cycle": { "name": "Kettle cycle" }
+    },
+    "number": {
+      "keep_temperature": { "name": "Keep-warm temperature" },
+      "keep_duration": { "name": "Keep-warm duration" }
+    },
+    "select": {
+      "program": { "name": "Program" }
+    },
+    "sensor": {
+      "status": {
+        "name": "Status",
+        "state": {
+          "ready": "Ready",
+          "heating": "Heating",
+          "boiling": "Boiling",
+          "cooling": "Cooling",
+          "keeping_warm": "Keeping warm",
+          "lifted": "Lifted from base",
+          "fault": "Fault",
+          "unavailable": "Unavailable"
+        }
+      }
+    },
+    "switch": {
+      "keep_warm": { "name": "Keep warm" },
+      "boiling_reminder": { "name": "Boiling reminder" },
+      "keep_warm_reminder": { "name": "Keep-warm reminder" },
+      "lift_memory": { "name": "Resume after lifting" },
+      "custom_knob": { "name": "Custom knob temperature" },
+      "no_disturb": { "name": "Do not disturb" }
+    },
+    "water_heater": {
+      "kettle": { "name": "Kettle" }
+    }
+  },
+  "exceptions": {
+    "command_rejected": {
+      "message": "The kettle rejected {count} setting(s)."
+    }
+  }
+}
