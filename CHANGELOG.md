@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1
+
+- Added Russian translations for setup, preferences, entities, states, and errors.
+- Localized the bundled dashboard card, visual editor, and native dialog from the Home Assistant language setting.
+- Added a Russian README with matching Russian card and dialog screenshots.
+
 ## 0.1.0
 
 - Initial public release as a HACS custom integration.

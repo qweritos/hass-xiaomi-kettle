@@ -1,6 +1,7 @@
 import { fireEvent } from 'custom-card-helpers';
 import { LitElement, css, html, type TemplateResult } from 'lit';
 import { CARD_TAG, EDITOR_TAG, REPOSITORY_URL } from './constants';
+import { localize } from './localize';
 import type { KettleCardConfig, KettleHass } from './types';
 
 export class XiaomiKettleCard extends LitElement {
@@ -106,27 +107,33 @@ export class XiaomiKettleCard extends LitElement {
   override render(): TemplateResult {
     const entityId = this._config?.entity;
     if (!entityId) {
-      return html`<ha-card class="error">Select a yunmi.kettle.v19 water heater entity.</ha-card>`;
+      return html`<ha-card class="error">${localize(this.hass, 'card.select_entity')}</ha-card>`;
     }
     const entity = this.hass?.states?.[entityId];
     if (!entity) {
-      return html`<ha-card class="loading" aria-label="Kettle is loading">
+      return html`<ha-card class="loading" aria-label=${localize(this.hass, 'card.loading')}>
         <div class="loading-header">
           <ha-icon icon=${this._config?.icon ?? 'mdi:kettle-outline'}></ha-icon>
-          <strong>${this._config?.name ?? 'Kettle'}</strong>
+          <strong>${this._config?.name ?? localize(this.hass, 'common.kettle')}</strong>
         </div>
-        <hui-warning>Home Assistant is starting. Not everything may be available yet.</hui-warning>
+        <hui-warning>${localize(this.hass, 'card.starting')}</hui-warning>
       </ha-card>`;
     }
 
-    const name = this._config?.name ?? entity.attributes.friendly_name ?? 'Kettle';
+    const name =
+      this._config?.name ?? entity.attributes.friendly_name ?? localize(this.hass, 'common.kettle');
     const statusCode = Number(entity.attributes['kettle.status']);
     const heating = statusCode === 1 || statusCode === 2;
     const icon = this._config?.icon ?? (heating ? 'mdi:kettle-steam' : 'mdi:kettle');
 
     return html`
       <ha-card>
-        <button class="header" type="button" @click=${this._open} aria-label="Open kettle dialog">
+        <button
+          class="header"
+          type="button"
+          @click=${this._open}
+          aria-label=${localize(this.hass, 'card.open_dialog')}
+        >
           <ha-icon icon=${icon}></ha-icon>
           <span class="header-copy"><strong>${name}</strong></span>
         </button>

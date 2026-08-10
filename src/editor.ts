@@ -3,6 +3,7 @@ import { LitElement, css, html, type TemplateResult } from 'lit';
 import { EDITOR_TAG } from './constants';
 import { resolveKettleEntities } from './device';
 import { parsePresets } from './kettle';
+import { localize } from './localize';
 import type { KettlePreset } from './types';
 import type { KettleCardConfig, KettleHass } from './types';
 
@@ -24,13 +25,13 @@ const SCHEMA: FormSchema[] = [
   { name: 'show_controls', selector: { boolean: {} } },
 ];
 
-const LABELS: Record<string, string> = {
-  entity: 'Kettle entity',
-  name: 'Title',
-  icon: 'Icon',
-  show_presets: 'Show programs',
-  show_controls: 'Show Boil and Stop controls',
-};
+const LABELS = {
+  entity: 'editor.entity',
+  name: 'editor.name',
+  icon: 'editor.icon',
+  show_presets: 'editor.show_presets',
+  show_controls: 'editor.show_controls',
+} as const;
 
 export class XiaomiKettleCardEditor extends LitElement {
   static override properties = {
@@ -126,9 +127,10 @@ export class XiaomiKettleCardEditor extends LitElement {
     };
   }
 
-  private _label(schema: FormSchema): string {
-    return LABELS[schema.name] ?? String(schema.name);
-  }
+  private _label = (schema: FormSchema): string =>
+    schema.name in LABELS
+      ? localize(this.hass, LABELS[schema.name as keyof typeof LABELS])
+      : String(schema.name);
 
   private _valueChanged(event: CustomEvent<{ value: KettleCardConfig }>): void {
     const config = { ...this._config, ...event.detail.value };
@@ -185,8 +187,8 @@ export class XiaomiKettleCardEditor extends LitElement {
       ${
         presets.length
           ? html`<section class="preset-icons">
-              <h3>Program icons</h3>
-              <p>Choose an icon for each preset discovered from Xiaomi Home.</p>
+              <h3>${localize(this.hass, 'editor.program_icons')}</h3>
+              <p>${localize(this.hass, 'editor.program_icons_description')}</p>
               ${presets.map(
                 (preset) =>
                   html`<div class="preset-row">
@@ -199,7 +201,7 @@ export class XiaomiKettleCardEditor extends LitElement {
                       .hass=${this.hass}
                       .selector=${{ icon: {} }}
                       .value=${this._config.preset_icons?.[preset.name] ?? preset.icon}
-                      .label=${`${preset.name} icon`}
+                      .label=${localize(this.hass, 'editor.preset_icon', { name: preset.name })}
                       @value-changed=${(event: CustomEvent<{ value?: string }>) =>
                         this._presetIconChanged(preset, event)}
                     ></ha-selector>

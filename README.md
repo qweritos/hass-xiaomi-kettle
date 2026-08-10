@@ -1,5 +1,7 @@
 # Xiaomi Kettle for Home Assistant
 
+English | [Русский](README.ru.md)
+
 <p align="center">
   <img src="docs/xiaomi-smart-kettle-2-pro.png" alt="Xiaomi Smart Kettle 2 Pro" width="300">
 </p>

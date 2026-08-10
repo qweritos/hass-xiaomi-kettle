@@ -45,11 +45,11 @@ var n = (e, t, n, r) => {
 	let t = "";
 	for (let n of e.cssRules) t += n.cssText;
 	return c(t);
-})(e) : e, { is: f, defineProperty: p, getOwnPropertyDescriptor: m, getOwnPropertyNames: h, getOwnPropertySymbols: g, getPrototypeOf: _ } = Object, v = globalThis, y = v.trustedTypes, ee = y ? y.emptyScript : "", te = v.reactiveElementPolyfillSupport, b = (e, t) => e, x = {
+})(e) : e, { is: f, defineProperty: p, getOwnPropertyDescriptor: m, getOwnPropertyNames: h, getOwnPropertySymbols: g, getPrototypeOf: _ } = Object, v = globalThis, y = v.trustedTypes, b = y ? y.emptyScript : "", ee = v.reactiveElementPolyfillSupport, x = (e, t) => e, S = {
 	toAttribute(e, t) {
 		switch (t) {
 			case Boolean:
-				e = e ? ee : null;
+				e = e ? b : null;
 				break;
 			case Object:
 			case Array: e = e == null ? e : JSON.stringify(e);
@@ -74,13 +74,13 @@ var n = (e, t, n, r) => {
 		}
 		return n;
 	}
-}, ne = (e, t) => !f(e, t), S = {
+}, te = (e, t) => !f(e, t), ne = {
 	attribute: !0,
 	type: String,
-	converter: x,
+	converter: S,
 	reflect: !1,
 	useDefault: !1,
-	hasChanged: ne
+	hasChanged: te
 };
 Symbol.metadata ??= Symbol("metadata"), v.litPropertyMetadata ??= /* @__PURE__ */ new WeakMap();
 var C = class extends HTMLElement {
@@ -90,7 +90,7 @@ var C = class extends HTMLElement {
 	static get observedAttributes() {
 		return this.finalize(), this._$Eh && [...this._$Eh.keys()];
 	}
-	static createProperty(e, t = S) {
+	static createProperty(e, t = ne) {
 		if (t.state && (t.attribute = !1), this._$Ei(), this.prototype.hasOwnProperty(e) && ((t = Object.create(t)).wrapped = !0), this.elementProperties.set(e, t), !t.noAccessor) {
 			let n = Symbol(), r = this.getPropertyDescriptor(e, n, t);
 			r !== void 0 && p(this.prototype, e, r);
@@ -116,16 +116,16 @@ var C = class extends HTMLElement {
 		};
 	}
 	static getPropertyOptions(e) {
-		return this.elementProperties.get(e) ?? S;
+		return this.elementProperties.get(e) ?? ne;
 	}
 	static _$Ei() {
-		if (this.hasOwnProperty(b("elementProperties"))) return;
+		if (this.hasOwnProperty(x("elementProperties"))) return;
 		let e = _(this);
 		e.finalize(), e.l !== void 0 && (this.l = [...e.l]), this.elementProperties = new Map(e.elementProperties);
 	}
 	static finalize() {
-		if (this.hasOwnProperty(b("finalized"))) return;
-		if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(b("properties"))) {
+		if (this.hasOwnProperty(x("finalized"))) return;
+		if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(x("properties"))) {
 			let e = this.properties, t = [...h(e), ...g(e)];
 			for (let n of t) this.createProperty(n, e[n]);
 		}
@@ -187,14 +187,14 @@ var C = class extends HTMLElement {
 	_$ET(e, t) {
 		let n = this.constructor.elementProperties.get(e), r = this.constructor._$Eu(e, n);
 		if (r !== void 0 && !0 === n.reflect) {
-			let i = (n.converter?.toAttribute === void 0 ? x : n.converter).toAttribute(t, n.type);
+			let i = (n.converter?.toAttribute === void 0 ? S : n.converter).toAttribute(t, n.type);
 			this._$Em = e, i == null ? this.removeAttribute(r) : this.setAttribute(r, i), this._$Em = null;
 		}
 	}
 	_$AK(e, t) {
 		let n = this.constructor, r = n._$Eh.get(e);
 		if (r !== void 0 && this._$Em !== r) {
-			let e = n.getPropertyOptions(r), i = typeof e.converter == "function" ? { fromAttribute: e.converter } : e.converter?.fromAttribute === void 0 ? x : e.converter;
+			let e = n.getPropertyOptions(r), i = typeof e.converter == "function" ? { fromAttribute: e.converter } : e.converter?.fromAttribute === void 0 ? S : e.converter;
 			this._$Em = r;
 			let a = i.fromAttribute(t, e.type);
 			this[r] = a ?? this._$Ej?.get(r) ?? a, this._$Em = null;
@@ -203,7 +203,7 @@ var C = class extends HTMLElement {
 	requestUpdate(e, t, n, r = !1, i) {
 		if (e !== void 0) {
 			let a = this.constructor;
-			if (!1 === r && (i = this[e]), n ??= a.getPropertyOptions(e), !((n.hasChanged ?? ne)(i, t) || n.useDefault && n.reflect && i === this._$Ej?.get(e) && !this.hasAttribute(a._$Eu(e, n)))) return;
+			if (!1 === r && (i = this[e]), n ??= a.getPropertyOptions(e), !((n.hasChanged ?? te)(i, t) || n.useDefault && n.reflect && i === this._$Ej?.get(e) && !this.hasAttribute(a._$Eu(e, n)))) return;
 			this.C(e, t, n);
 		}
 		!1 === this.isUpdatePending && (this._$ES = this._$EP());
@@ -267,89 +267,89 @@ var C = class extends HTMLElement {
 	updated(e) {}
 	firstUpdated(e) {}
 };
-C.elementStyles = [], C.shadowRootOptions = { mode: "open" }, C[b("elementProperties")] = /* @__PURE__ */ new Map(), C[b("finalized")] = /* @__PURE__ */ new Map(), te?.({ ReactiveElement: C }), (v.reactiveElementVersions ??= []).push("2.1.2");
+C.elementStyles = [], C.shadowRootOptions = { mode: "open" }, C[x("elementProperties")] = /* @__PURE__ */ new Map(), C[x("finalized")] = /* @__PURE__ */ new Map(), ee?.({ ReactiveElement: C }), (v.reactiveElementVersions ??= []).push("2.1.2");
 //#endregion
 //#region node_modules/lit-html/lit-html.js
-var w = globalThis, T = (e) => e, E = w.trustedTypes, re = E ? E.createPolicy("lit-html", { createHTML: (e) => e }) : void 0, ie = "$lit$", D = `lit$${Math.random().toFixed(9).slice(2)}$`, ae = "?" + D, oe = `<${ae}>`, O = document, k = () => O.createComment(""), A = (e) => e === null || typeof e != "object" && typeof e != "function", j = Array.isArray, se = (e) => j(e) || typeof e?.[Symbol.iterator] == "function", M = "[ 	\n\f\r]", N = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, ce = /-->/g, le = />/g, P = RegExp(`>|${M}(?:([^\\s"'>=/]+)(${M}*=${M}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g"), ue = /'/g, de = /"/g, F = /^(?:script|style|textarea|title)$/i, I = ((e) => (t, ...n) => ({
+var w = globalThis, re = (e) => e, T = w.trustedTypes, ie = T ? T.createPolicy("lit-html", { createHTML: (e) => e }) : void 0, ae = "$lit$", E = `lit$${Math.random().toFixed(9).slice(2)}$`, oe = "?" + E, se = `<${oe}>`, D = document, O = () => D.createComment(""), k = (e) => e === null || typeof e != "object" && typeof e != "function", A = Array.isArray, ce = (e) => A(e) || typeof e?.[Symbol.iterator] == "function", j = "[ 	\n\f\r]", M = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, le = /-->/g, ue = />/g, N = RegExp(`>|${j}(?:([^\\s"'>=/]+)(${j}*=${j}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g"), de = /'/g, fe = /"/g, pe = /^(?:script|style|textarea|title)$/i, P = ((e) => (t, ...n) => ({
 	_$litType$: e,
 	strings: t,
 	values: n
-}))(1), L = Symbol.for("lit-noChange"), R = Symbol.for("lit-nothing"), fe = /* @__PURE__ */ new WeakMap(), z = O.createTreeWalker(O, 129);
-function pe(e, t) {
-	if (!j(e) || !e.hasOwnProperty("raw")) throw Error("invalid template strings array");
-	return re === void 0 ? t : re.createHTML(t);
+}))(1), F = Symbol.for("lit-noChange"), I = Symbol.for("lit-nothing"), me = /* @__PURE__ */ new WeakMap(), L = D.createTreeWalker(D, 129);
+function he(e, t) {
+	if (!A(e) || !e.hasOwnProperty("raw")) throw Error("invalid template strings array");
+	return ie === void 0 ? t : ie.createHTML(t);
 }
-var me = (e, t) => {
-	let n = e.length - 1, r = [], i, a = t === 2 ? "<svg>" : t === 3 ? "<math>" : "", o = N;
+var ge = (e, t) => {
+	let n = e.length - 1, r = [], i, a = t === 2 ? "<svg>" : t === 3 ? "<math>" : "", o = M;
 	for (let t = 0; t < n; t++) {
 		let n = e[t], s, c, l = -1, u = 0;
-		for (; u < n.length && (o.lastIndex = u, c = o.exec(n), c !== null);) u = o.lastIndex, o === N ? c[1] === "!--" ? o = ce : c[1] === void 0 ? c[2] === void 0 ? c[3] !== void 0 && (o = P) : (F.test(c[2]) && (i = RegExp("</" + c[2], "g")), o = P) : o = le : o === P ? c[0] === ">" ? (o = i ?? N, l = -1) : c[1] === void 0 ? l = -2 : (l = o.lastIndex - c[2].length, s = c[1], o = c[3] === void 0 ? P : c[3] === "\"" ? de : ue) : o === de || o === ue ? o = P : o === ce || o === le ? o = N : (o = P, i = void 0);
-		let d = o === P && e[t + 1].startsWith("/>") ? " " : "";
-		a += o === N ? n + oe : l >= 0 ? (r.push(s), n.slice(0, l) + ie + n.slice(l) + D + d) : n + D + (l === -2 ? t : d);
+		for (; u < n.length && (o.lastIndex = u, c = o.exec(n), c !== null);) u = o.lastIndex, o === M ? c[1] === "!--" ? o = le : c[1] === void 0 ? c[2] === void 0 ? c[3] !== void 0 && (o = N) : (pe.test(c[2]) && (i = RegExp("</" + c[2], "g")), o = N) : o = ue : o === N ? c[0] === ">" ? (o = i ?? M, l = -1) : c[1] === void 0 ? l = -2 : (l = o.lastIndex - c[2].length, s = c[1], o = c[3] === void 0 ? N : c[3] === "\"" ? fe : de) : o === fe || o === de ? o = N : o === le || o === ue ? o = M : (o = N, i = void 0);
+		let d = o === N && e[t + 1].startsWith("/>") ? " " : "";
+		a += o === M ? n + se : l >= 0 ? (r.push(s), n.slice(0, l) + ae + n.slice(l) + E + d) : n + E + (l === -2 ? t : d);
 	}
-	return [pe(e, a + (e[n] || "<?>") + (t === 2 ? "</svg>" : t === 3 ? "</math>" : "")), r];
-}, B = class e {
+	return [he(e, a + (e[n] || "<?>") + (t === 2 ? "</svg>" : t === 3 ? "</math>" : "")), r];
+}, R = class e {
 	constructor({ strings: t, _$litType$: n }, r) {
 		let i;
 		this.parts = [];
-		let a = 0, o = 0, s = t.length - 1, c = this.parts, [l, u] = me(t, n);
-		if (this.el = e.createElement(l, r), z.currentNode = this.el.content, n === 2 || n === 3) {
+		let a = 0, o = 0, s = t.length - 1, c = this.parts, [l, u] = ge(t, n);
+		if (this.el = e.createElement(l, r), L.currentNode = this.el.content, n === 2 || n === 3) {
 			let e = this.el.content.firstChild;
 			e.replaceWith(...e.childNodes);
 		}
-		for (; (i = z.nextNode()) !== null && c.length < s;) {
+		for (; (i = L.nextNode()) !== null && c.length < s;) {
 			if (i.nodeType === 1) {
-				if (i.hasAttributes()) for (let e of i.getAttributeNames()) if (e.endsWith(ie)) {
-					let t = u[o++], n = i.getAttribute(e).split(D), r = /([.?@])?(.*)/.exec(t);
+				if (i.hasAttributes()) for (let e of i.getAttributeNames()) if (e.endsWith(ae)) {
+					let t = u[o++], n = i.getAttribute(e).split(E), r = /([.?@])?(.*)/.exec(t);
 					c.push({
 						type: 1,
 						index: a,
 						name: r[2],
 						strings: n,
-						ctor: r[1] === "." ? ge : r[1] === "?" ? _e : r[1] === "@" ? ve : U
+						ctor: r[1] === "." ? ve : r[1] === "?" ? ye : r[1] === "@" ? be : V
 					}), i.removeAttribute(e);
-				} else e.startsWith(D) && (c.push({
+				} else e.startsWith(E) && (c.push({
 					type: 6,
 					index: a
 				}), i.removeAttribute(e));
-				if (F.test(i.tagName)) {
-					let e = i.textContent.split(D), t = e.length - 1;
+				if (pe.test(i.tagName)) {
+					let e = i.textContent.split(E), t = e.length - 1;
 					if (t > 0) {
-						i.textContent = E ? E.emptyScript : "";
-						for (let n = 0; n < t; n++) i.append(e[n], k()), z.nextNode(), c.push({
+						i.textContent = T ? T.emptyScript : "";
+						for (let n = 0; n < t; n++) i.append(e[n], O()), L.nextNode(), c.push({
 							type: 2,
 							index: ++a
 						});
-						i.append(e[t], k());
+						i.append(e[t], O());
 					}
 				}
 			} else if (i.nodeType === 8) {
-				if (i.data === ae) c.push({
+				if (i.data === oe) c.push({
 					type: 2,
 					index: a
 				});
 				else {
 					let e = -1;
-					for (; (e = i.data.indexOf(D, e + 1)) !== -1;) c.push({
+					for (; (e = i.data.indexOf(E, e + 1)) !== -1;) c.push({
 						type: 7,
 						index: a
-					}), e += D.length - 1;
+					}), e += E.length - 1;
 				}
 			}
 			a++;
 		}
 	}
 	static createElement(e, t) {
-		let n = O.createElement("template");
+		let n = D.createElement("template");
 		return n.innerHTML = e, n;
 	}
 };
-function V(e, t, n = e, r) {
-	if (t === L) return t;
-	let i = r === void 0 ? n._$Cl : n._$Co?.[r], a = A(t) ? void 0 : t._$litDirective$;
-	return i?.constructor !== a && (i?._$AO?.(!1), a === void 0 ? i = void 0 : (i = new a(e), i._$AT(e, n, r)), r === void 0 ? n._$Cl = i : (n._$Co ??= [])[r] = i), i !== void 0 && (t = V(e, i._$AS(e, t.values), i, r)), t;
+function z(e, t, n = e, r) {
+	if (t === F) return t;
+	let i = r === void 0 ? n._$Cl : n._$Co?.[r], a = k(t) ? void 0 : t._$litDirective$;
+	return i?.constructor !== a && (i?._$AO?.(!1), a === void 0 ? i = void 0 : (i = new a(e), i._$AT(e, n, r)), r === void 0 ? n._$Cl = i : (n._$Co ??= [])[r] = i), i !== void 0 && (t = z(e, i._$AS(e, t.values), i, r)), t;
 }
-var he = class {
+var _e = class {
 	constructor(e, t) {
 		this._$AV = [], this._$AN = void 0, this._$AD = e, this._$AM = t;
 	}
@@ -360,28 +360,28 @@ var he = class {
 		return this._$AM._$AU;
 	}
 	u(e) {
-		let { el: { content: t }, parts: n } = this._$AD, r = (e?.creationScope ?? O).importNode(t, !0);
-		z.currentNode = r;
-		let i = z.nextNode(), a = 0, o = 0, s = n[0];
+		let { el: { content: t }, parts: n } = this._$AD, r = (e?.creationScope ?? D).importNode(t, !0);
+		L.currentNode = r;
+		let i = L.nextNode(), a = 0, o = 0, s = n[0];
 		for (; s !== void 0;) {
 			if (a === s.index) {
 				let t;
-				s.type === 2 ? t = new H(i, i.nextSibling, this, e) : s.type === 1 ? t = new s.ctor(i, s.name, s.strings, this, e) : s.type === 6 && (t = new ye(i, this, e)), this._$AV.push(t), s = n[++o];
+				s.type === 2 ? t = new B(i, i.nextSibling, this, e) : s.type === 1 ? t = new s.ctor(i, s.name, s.strings, this, e) : s.type === 6 && (t = new xe(i, this, e)), this._$AV.push(t), s = n[++o];
 			}
-			a !== s?.index && (i = z.nextNode(), a++);
+			a !== s?.index && (i = L.nextNode(), a++);
 		}
-		return z.currentNode = O, r;
+		return L.currentNode = D, r;
 	}
 	p(e) {
 		let t = 0;
 		for (let n of this._$AV) n !== void 0 && (n.strings === void 0 ? n._$AI(e[t]) : (n._$AI(e, n, t), t += n.strings.length - 2)), t++;
 	}
-}, H = class e {
+}, B = class e {
 	get _$AU() {
 		return this._$AM?._$AU ?? this._$Cv;
 	}
 	constructor(e, t, n, r) {
-		this.type = 2, this._$AH = R, this._$AN = void 0, this._$AA = e, this._$AB = t, this._$AM = n, this.options = r, this._$Cv = r?.isConnected ?? !0;
+		this.type = 2, this._$AH = I, this._$AN = void 0, this._$AA = e, this._$AB = t, this._$AM = n, this.options = r, this._$Cv = r?.isConnected ?? !0;
 	}
 	get parentNode() {
 		let e = this._$AA.parentNode, t = this._$AM;
@@ -394,7 +394,7 @@ var he = class {
 		return this._$AB;
 	}
 	_$AI(e, t = this) {
-		e = V(this, e, t), A(e) ? e === R || e == null || e === "" ? (this._$AH !== R && this._$AR(), this._$AH = R) : e !== this._$AH && e !== L && this._(e) : e._$litType$ === void 0 ? e.nodeType === void 0 ? se(e) ? this.k(e) : this._(e) : this.T(e) : this.$(e);
+		e = z(this, e, t), k(e) ? e === I || e == null || e === "" ? (this._$AH !== I && this._$AR(), this._$AH = I) : e !== this._$AH && e !== F && this._(e) : e._$litType$ === void 0 ? e.nodeType === void 0 ? ce(e) ? this.k(e) : this._(e) : this.T(e) : this.$(e);
 	}
 	O(e) {
 		return this._$AA.parentNode.insertBefore(e, this._$AB);
@@ -403,36 +403,36 @@ var he = class {
 		this._$AH !== e && (this._$AR(), this._$AH = this.O(e));
 	}
 	_(e) {
-		this._$AH !== R && A(this._$AH) ? this._$AA.nextSibling.data = e : this.T(O.createTextNode(e)), this._$AH = e;
+		this._$AH !== I && k(this._$AH) ? this._$AA.nextSibling.data = e : this.T(D.createTextNode(e)), this._$AH = e;
 	}
 	$(e) {
-		let { values: t, _$litType$: n } = e, r = typeof n == "number" ? this._$AC(e) : (n.el === void 0 && (n.el = B.createElement(pe(n.h, n.h[0]), this.options)), n);
+		let { values: t, _$litType$: n } = e, r = typeof n == "number" ? this._$AC(e) : (n.el === void 0 && (n.el = R.createElement(he(n.h, n.h[0]), this.options)), n);
 		if (this._$AH?._$AD === r) this._$AH.p(t);
 		else {
-			let e = new he(r, this), n = e.u(this.options);
+			let e = new _e(r, this), n = e.u(this.options);
 			e.p(t), this.T(n), this._$AH = e;
 		}
 	}
 	_$AC(e) {
-		let t = fe.get(e.strings);
-		return t === void 0 && fe.set(e.strings, t = new B(e)), t;
+		let t = me.get(e.strings);
+		return t === void 0 && me.set(e.strings, t = new R(e)), t;
 	}
 	k(t) {
-		j(this._$AH) || (this._$AH = [], this._$AR());
+		A(this._$AH) || (this._$AH = [], this._$AR());
 		let n = this._$AH, r, i = 0;
-		for (let a of t) i === n.length ? n.push(r = new e(this.O(k()), this.O(k()), this, this.options)) : r = n[i], r._$AI(a), i++;
+		for (let a of t) i === n.length ? n.push(r = new e(this.O(O()), this.O(O()), this, this.options)) : r = n[i], r._$AI(a), i++;
 		i < n.length && (this._$AR(r && r._$AB.nextSibling, i), n.length = i);
 	}
 	_$AR(e = this._$AA.nextSibling, t) {
 		for (this._$AP?.(!1, !0, t); e !== this._$AB;) {
-			let t = T(e).nextSibling;
-			T(e).remove(), e = t;
+			let t = re(e).nextSibling;
+			re(e).remove(), e = t;
 		}
 	}
 	setConnected(e) {
 		this._$AM === void 0 && (this._$Cv = e, this._$AP?.(e));
 	}
-}, U = class {
+}, V = class {
 	get tagName() {
 		return this.element.tagName;
 	}
@@ -440,47 +440,47 @@ var he = class {
 		return this._$AM._$AU;
 	}
 	constructor(e, t, n, r, i) {
-		this.type = 1, this._$AH = R, this._$AN = void 0, this.element = e, this.name = t, this._$AM = r, this.options = i, n.length > 2 || n[0] !== "" || n[1] !== "" ? (this._$AH = Array(n.length - 1).fill(/* @__PURE__ */ new String()), this.strings = n) : this._$AH = R;
+		this.type = 1, this._$AH = I, this._$AN = void 0, this.element = e, this.name = t, this._$AM = r, this.options = i, n.length > 2 || n[0] !== "" || n[1] !== "" ? (this._$AH = Array(n.length - 1).fill(/* @__PURE__ */ new String()), this.strings = n) : this._$AH = I;
 	}
 	_$AI(e, t = this, n, r) {
 		let i = this.strings, a = !1;
-		if (i === void 0) e = V(this, e, t, 0), a = !A(e) || e !== this._$AH && e !== L, a && (this._$AH = e);
+		if (i === void 0) e = z(this, e, t, 0), a = !k(e) || e !== this._$AH && e !== F, a && (this._$AH = e);
 		else {
 			let r = e, o, s;
-			for (e = i[0], o = 0; o < i.length - 1; o++) s = V(this, r[n + o], t, o), s === L && (s = this._$AH[o]), a ||= !A(s) || s !== this._$AH[o], s === R ? e = R : e !== R && (e += (s ?? "") + i[o + 1]), this._$AH[o] = s;
+			for (e = i[0], o = 0; o < i.length - 1; o++) s = z(this, r[n + o], t, o), s === F && (s = this._$AH[o]), a ||= !k(s) || s !== this._$AH[o], s === I ? e = I : e !== I && (e += (s ?? "") + i[o + 1]), this._$AH[o] = s;
 		}
 		a && !r && this.j(e);
 	}
 	j(e) {
-		e === R ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, e ?? "");
+		e === I ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, e ?? "");
 	}
-}, ge = class extends U {
+}, ve = class extends V {
 	constructor() {
 		super(...arguments), this.type = 3;
 	}
 	j(e) {
-		this.element[this.name] = e === R ? void 0 : e;
+		this.element[this.name] = e === I ? void 0 : e;
 	}
-}, _e = class extends U {
+}, ye = class extends V {
 	constructor() {
 		super(...arguments), this.type = 4;
 	}
 	j(e) {
-		this.element.toggleAttribute(this.name, !!e && e !== R);
+		this.element.toggleAttribute(this.name, !!e && e !== I);
 	}
-}, ve = class extends U {
+}, be = class extends V {
 	constructor(e, t, n, r, i) {
 		super(e, t, n, r, i), this.type = 5;
 	}
 	_$AI(e, t = this) {
-		if ((e = V(this, e, t, 0) ?? R) === L) return;
-		let n = this._$AH, r = e === R && n !== R || e.capture !== n.capture || e.once !== n.once || e.passive !== n.passive, i = e !== R && (n === R || r);
+		if ((e = z(this, e, t, 0) ?? I) === F) return;
+		let n = this._$AH, r = e === I && n !== I || e.capture !== n.capture || e.once !== n.once || e.passive !== n.passive, i = e !== I && (n === I || r);
 		r && this.element.removeEventListener(this.name, this, n), i && this.element.addEventListener(this.name, this, e), this._$AH = e;
 	}
 	handleEvent(e) {
 		typeof this._$AH == "function" ? this._$AH.call(this.options?.host ?? this.element, e) : this._$AH.handleEvent(e);
 	}
-}, ye = class {
+}, xe = class {
 	constructor(e, t, n) {
 		this.element = e, this.type = 6, this._$AN = void 0, this._$AM = t, this.options = n;
 	}
@@ -488,18 +488,18 @@ var he = class {
 		return this._$AM._$AU;
 	}
 	_$AI(e) {
-		V(this, e);
+		z(this, e);
 	}
-}, be = w.litHtmlPolyfillSupport;
-be?.(B, H), (w.litHtmlVersions ??= []).push("3.3.3");
-var xe = (e, t, n) => {
+}, Se = w.litHtmlPolyfillSupport;
+Se?.(R, B), (w.litHtmlVersions ??= []).push("3.3.3");
+var Ce = (e, t, n) => {
 	let r = n?.renderBefore ?? t, i = r._$litPart$;
 	if (i === void 0) {
 		let e = n?.renderBefore ?? null;
-		r._$litPart$ = i = new H(t.insertBefore(k(), e), e, void 0, n ?? {});
+		r._$litPart$ = i = new B(t.insertBefore(O(), e), e, void 0, n ?? {});
 	}
 	return i._$AI(e), i;
-}, W = globalThis, G = class extends C {
+}, H = globalThis, U = class extends C {
 	constructor() {
 		super(...arguments), this.renderOptions = { host: this }, this._$Do = void 0;
 	}
@@ -509,7 +509,7 @@ var xe = (e, t, n) => {
 	}
 	update(e) {
 		let t = this.render();
-		this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(e), this._$Do = xe(t, this.renderRoot, this.renderOptions);
+		this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(e), this._$Do = Ce(t, this.renderRoot, this.renderOptions);
 	}
 	connectedCallback() {
 		super.connectedCallback(), this._$Do?.setConnected(!0);
@@ -518,25 +518,25 @@ var xe = (e, t, n) => {
 		super.disconnectedCallback(), this._$Do?.setConnected(!1);
 	}
 	render() {
-		return L;
+		return F;
 	}
 };
-G._$litElement$ = !0, G.finalized = !0, W.litElementHydrateSupport?.({ LitElement: G });
-var Se = W.litElementPolyfillSupport;
-Se?.({ LitElement: G }), (W.litElementVersions ??= []).push("4.2.2");
+U._$litElement$ = !0, U.finalized = !0, H.litElementHydrateSupport?.({ LitElement: U });
+var we = H.litElementPolyfillSupport;
+we?.({ LitElement: U }), (H.litElementVersions ??= []).push("4.2.2");
 //#endregion
 //#region node_modules/lit-html/directive.js
-var Ce = {
+var Te = {
 	ATTRIBUTE: 1,
 	CHILD: 2,
 	PROPERTY: 3,
 	BOOLEAN_ATTRIBUTE: 4,
 	EVENT: 5,
 	ELEMENT: 6
-}, we = (e) => (...t) => ({
+}, Ee = (e) => (...t) => ({
 	_$litDirective$: e,
 	values: t
-}), Te = class {
+}), De = class {
 	constructor(e) {}
 	get _$AU() {
 		return this._$AM._$AU;
@@ -550,9 +550,9 @@ var Ce = {
 	update(e, t) {
 		return this.render(...t);
 	}
-}, K = we(class extends Te {
+}, W = Ee(class extends De {
 	constructor(e) {
-		if (super(e), e.type !== Ce.ATTRIBUTE || e.name !== "class" || e.strings?.length > 2) throw Error("`classMap()` can only be used in the `class` attribute and must be the only part in the attribute.");
+		if (super(e), e.type !== Te.ATTRIBUTE || e.name !== "class" || e.strings?.length > 2) throw Error("`classMap()` can only be used in the `class` attribute and must be the only part in the attribute.");
 	}
 	render(e) {
 		return " " + Object.keys(e).filter((t) => e[t]).join(" ") + " ";
@@ -569,9 +569,9 @@ var Ce = {
 			let r = !!t[e];
 			r === this.st.has(e) || this.nt?.has(e) || (r ? (n.add(e), this.st.add(e)) : (n.remove(e), this.st.delete(e)));
 		}
-		return L;
+		return F;
 	}
-}), q = "xiaomi-kettle-card", Ee = "xiaomi-kettle-card-editor", J = "xiaomi-kettle-dialog-content", De = "https://github.com/qweritos/hass-xiaomi-kettle", Oe = /* @__PURE__ */ new Set(["yunmi.kettle.v19"]), ke = 1e3, Y = {
+}), G = "xiaomi-kettle-card", Oe = "xiaomi-kettle-card-editor", K = "xiaomi-kettle-dialog-content", ke = "https://github.com/qweritos/hass-xiaomi-kettle", Ae = /* @__PURE__ */ new Set(["yunmi.kettle.v19"]), je = 1e3, q = {
 	lifted: "kettle_lifting",
 	stop: "stop_work",
 	keepWarm: "auto_keep_warm",
@@ -586,32 +586,32 @@ var Ce = {
 };
 //#endregion
 //#region src/device.ts
-function Ae(e) {
+function Me(e) {
 	return e.split(".", 1)[0] ?? "";
 }
-function je(e, t) {
+function Ne(e, t) {
 	return e.entities?.[t]?.device_id ?? void 0;
 }
-function Me(e, t) {
+function Pe(e, t) {
 	let n = e.states?.[t]?.attributes?.["xiaomi_kettle.source_entity_id"];
 	return typeof n == "string" && e.states[n] ? n : t;
 }
-function Ne(e, t) {
+function Fe(e, t) {
 	return Object.values(e.entities ?? {}).find((n) => (e.states?.[n.entity_id])?.attributes?.["xiaomi_kettle.source_entity_id"] === t)?.device_id ?? void 0;
 }
-function Pe(e, t) {
+function Ie(e, t) {
 	if (!e || !t) return !1;
-	let n = Me(e, t);
+	let n = Pe(e, t);
 	if (n !== t) return !0;
-	let r = je(e, n), i = r ? e.devices?.[r]?.model?.toLowerCase() : void 0, a = String(e.states?.[t]?.attributes?.model ?? "").toLowerCase();
-	return !!(i && Oe.has(i) || Oe.has(a));
+	let r = Ne(e, n), i = r ? e.devices?.[r]?.model?.toLowerCase() : void 0, a = String(e.states?.[t]?.attributes?.model ?? "").toLowerCase();
+	return !!(i && Ae.has(i) || Ae.has(a));
 }
-function Fe(e, t) {
-	let n = Me(e, t), r = je(e, n);
+function Le(e, t) {
+	let n = Pe(e, t), r = Ne(e, n);
 	if (!r) return;
-	let i = (t) => Object.values(e.entities ?? {}).filter((e) => e.device_id === t && !e.disabled_by), a = (e, t, n = []) => e.find((e) => Ae(e.entity_id) === t && (!n.length || n.some((t) => e.entity_id.endsWith(`_${t}`))))?.entity_id, o = i(r), s = a(o, "water_heater") ?? (Ae(n) === "water_heater" ? n : void 0);
+	let i = (t) => Object.values(e.entities ?? {}).filter((e) => e.device_id === t && !e.disabled_by), a = (e, t, n = []) => e.find((e) => Me(e.entity_id) === t && (!n.length || n.some((t) => e.entity_id.endsWith(`_${t}`))))?.entity_id, o = i(r), s = a(o, "water_heater") ?? (Me(n) === "water_heater" ? n : void 0);
 	if (!s) return;
-	let c = Ne(e, s), l = c ?? r, u = c ? i(c) : o, d = (e, ...t) => a(u, e, t) ?? a(o, e, t), f = a(u, "water_heater") ?? s;
+	let c = Fe(e, s), l = c ?? r, u = c ? i(c) : o, d = (e, ...t) => a(u, e, t) ?? a(o, e, t), f = a(u, "water_heater") ?? s;
 	if (f) return {
 		deviceId: l,
 		main: f,
@@ -619,22 +619,22 @@ function Fe(e, t) {
 		start: d("button", "start"),
 		boil: d("button", "boil"),
 		program: d("select", "program"),
-		lifted: d("binary_sensor", Y.lifted, "lifted"),
-		stop: d("button", "stop", Y.stop),
-		keepWarm: d("switch", "keep_warm", Y.keepWarm),
-		keepTemp: d("number", "keep_temperature", Y.keepTemp),
-		keepTime: d("number", "keep_duration", Y.keepTime),
-		warmingTime: d("sensor", Y.warmingTime),
-		boilReminder: d("switch", "boiling_reminder", Y.boilReminder),
-		warmReminder: d("switch", "keep_warm_reminder", Y.warmReminder),
-		liftMemory: d("switch", "lift_memory", Y.liftMemory),
-		customKnob: d("switch", "custom_knob", Y.customKnob),
-		noDisturb: d("switch", "no_disturb", Y.noDisturb)
+		lifted: d("binary_sensor", q.lifted, "lifted"),
+		stop: d("button", "stop", q.stop),
+		keepWarm: d("switch", "keep_warm", q.keepWarm),
+		keepTemp: d("number", "keep_temperature", q.keepTemp),
+		keepTime: d("number", "keep_duration", q.keepTime),
+		warmingTime: d("sensor", q.warmingTime),
+		boilReminder: d("switch", "boiling_reminder", q.boilReminder),
+		warmReminder: d("switch", "keep_warm_reminder", q.warmReminder),
+		liftMemory: d("switch", "lift_memory", q.liftMemory),
+		customKnob: d("switch", "custom_knob", q.customKnob),
+		noDisturb: d("switch", "no_disturb", q.noDisturb)
 	};
 }
 //#endregion
 //#region src/dialog-styles.ts
-var Ie = l`
+var Re = l`
   :host {
     display: block;
     min-width: 0;
@@ -1293,20 +1293,148 @@ var Ie = l`
       padding: 11px 12px;
     }
   }
-`;
+`, ze = {
+	"common.kettle": "Kettle",
+	"common.manual": "Manual",
+	"common.boil": "Boil",
+	"common.start": "Start",
+	"common.stop": "Stop",
+	"common.tap_again": "Tap again",
+	"duration.hour": "{count} h",
+	"duration.minute": "{count} min",
+	"status.ready": "Ready",
+	"status.heating": "Heating",
+	"status.boiling": "Boiling",
+	"status.cooling": "Cooling",
+	"status.keeping_warm": "Keeping warm",
+	"status.lifted": "Lifted from base",
+	"status.fault": "Fault · code {code}",
+	"status.unavailable": "Unavailable",
+	"card.select_entity": "Select a yunmi.kettle.v19 water heater entity.",
+	"card.loading": "Kettle is loading",
+	"card.starting": "Home Assistant is starting. Not everything may be available yet.",
+	"card.open_dialog": "Open kettle dialog",
+	"editor.entity": "Kettle entity",
+	"editor.name": "Title",
+	"editor.icon": "Icon",
+	"editor.show_presets": "Show programs",
+	"editor.show_controls": "Show Boil and Stop controls",
+	"editor.program_icons": "Program icons",
+	"editor.program_icons_description": "Choose an icon for each preset discovered from Xiaomi Home.",
+	"editor.preset_icon": "{name} icon",
+	"dialog.resolve_error": "Unable to resolve this kettle’s entities.",
+	"dialog.command_failed": "Kettle command failed",
+	"dialog.stop_unavailable": "Stop is unavailable",
+	"dialog.tap_again_to_boil": "Tap again to boil",
+	"dialog.tap_again_preset": "Tap again · {name}",
+	"dialog.target_summary": "Target {temperature}°C",
+	"dialog.keep_summary": "Keep {temperature}°C",
+	"dialog.left_summary": "{duration} left",
+	"dialog.open_history": "Open temperature history",
+	"dialog.stop_kettle": "Stop kettle",
+	"dialog.no_presets": "No kettle presets available",
+	"dialog.target_temperature": "Target temperature",
+	"dialog.target_temperature_help": "Choose from 40 to 99°C",
+	"dialog.keep_warm": "Keep warm",
+	"dialog.keep_warm_help": "Maintain temperature after heating",
+	"dialog.temperature": "Temperature",
+	"dialog.keep_warm_target": "Keep-warm target",
+	"dialog.keep_warm_temperature": "Keep-warm temperature",
+	"dialog.duration": "Duration",
+	"dialog.duration_help": "1 to 24 hours",
+	"dialog.keep_warm_duration": "Keep-warm duration",
+	"dialog.preferences": "Preferences",
+	"dialog.kettle_position": "Kettle position",
+	"dialog.seated": "Seated on base",
+	"dialog.kept_warm": "Kept warm",
+	"dialog.boiling_reminder": "Boiling reminder",
+	"dialog.keep_warm_reminder": "Keep-warm reminder",
+	"dialog.resume_after_lifting": "Resume after lifting",
+	"dialog.resume_after_lifting_help": "Remember the active keep-warm temperature",
+	"dialog.custom_knob": "Custom knob temperature",
+	"dialog.do_not_disturb": "Do not disturb"
+}, Be = {
+	"common.kettle": "Чайник",
+	"common.manual": "Вручную",
+	"common.boil": "Вскипятить",
+	"common.start": "Запустить",
+	"common.stop": "Остановить",
+	"common.tap_again": "Нажмите ещё раз",
+	"duration.hour": "{count} ч",
+	"duration.minute": "{count} мин",
+	"status.ready": "Готов",
+	"status.heating": "Нагрев",
+	"status.boiling": "Кипячение",
+	"status.cooling": "Охлаждение",
+	"status.keeping_warm": "Поддержание температуры",
+	"status.lifted": "Снят с подставки",
+	"status.fault": "Ошибка · код {code}",
+	"status.unavailable": "Недоступен",
+	"card.select_entity": "Выберите сущность водонагревателя yunmi.kettle.v19.",
+	"card.loading": "Чайник загружается",
+	"card.starting": "Home Assistant запускается. Некоторые функции пока могут быть недоступны.",
+	"card.open_dialog": "Открыть диалог чайника",
+	"editor.entity": "Сущность чайника",
+	"editor.name": "Заголовок",
+	"editor.icon": "Значок",
+	"editor.show_presets": "Показывать программы",
+	"editor.show_controls": "Показывать кнопки кипячения и остановки",
+	"editor.program_icons": "Значки программ",
+	"editor.program_icons_description": "Выберите значок для каждой предустановки из Xiaomi Home.",
+	"editor.preset_icon": "Значок «{name}»",
+	"dialog.resolve_error": "Не удалось определить сущности этого чайника.",
+	"dialog.command_failed": "Не удалось выполнить команду чайника",
+	"dialog.stop_unavailable": "Остановка недоступна",
+	"dialog.tap_again_to_boil": "Нажмите ещё раз для кипячения",
+	"dialog.tap_again_preset": "Нажмите ещё раз · {name}",
+	"dialog.target_summary": "Цель {temperature}°C",
+	"dialog.keep_summary": "Поддержание {temperature}°C",
+	"dialog.left_summary": "осталось {duration}",
+	"dialog.open_history": "Открыть историю температуры",
+	"dialog.stop_kettle": "Остановить чайник",
+	"dialog.no_presets": "Нет доступных программ чайника",
+	"dialog.target_temperature": "Целевая температура",
+	"dialog.target_temperature_help": "Выберите от 40 до 99°C",
+	"dialog.keep_warm": "Поддержание температуры",
+	"dialog.keep_warm_help": "Поддерживать температуру после нагрева",
+	"dialog.temperature": "Температура",
+	"dialog.keep_warm_target": "Целевая температура поддержания",
+	"dialog.keep_warm_temperature": "Температура поддержания",
+	"dialog.duration": "Длительность",
+	"dialog.duration_help": "От 1 до 24 часов",
+	"dialog.keep_warm_duration": "Длительность поддержания",
+	"dialog.preferences": "Настройки",
+	"dialog.kettle_position": "Положение чайника",
+	"dialog.seated": "На подставке",
+	"dialog.kept_warm": "Поддерживается тёплым",
+	"dialog.boiling_reminder": "Напоминание о закипании",
+	"dialog.keep_warm_reminder": "Напоминание о поддержании температуры",
+	"dialog.resume_after_lifting": "Возобновление после снятия",
+	"dialog.resume_after_lifting_help": "Запомнить активную температуру поддержания",
+	"dialog.custom_knob": "Пользовательская температура регулятора",
+	"dialog.do_not_disturb": "Не беспокоить"
+};
+function J(e, t, n = {}) {
+	let r = e?.toLowerCase().startsWith("ru") ? Be : ze;
+	return Object.entries(n).reduce((e, [t, n]) => e.replaceAll(`{${t}}`, String(n)), r[t]);
+}
+function Y(e, t, n) {
+	return J(e?.locale?.language, t, n);
+}
 //#endregion
 //#region src/kettle.ts
-function X(e) {
-	return e >= 60 && e % 60 == 0 ? `${e / 60} h` : e > 60 ? `${Math.floor(e / 60)} h ${e % 60} min` : `${e} min`;
+function X(e, t = "en") {
+	let n = Math.floor(e / 60), r = e % 60;
+	return e >= 60 && r === 0 ? J(t, "duration.hour", { count: n }) : e > 60 ? `${J(t, "duration.hour", { count: n })} ${J(t, "duration.minute", { count: r })}` : J(t, "duration.minute", { count: e });
 }
-function Le(e, t) {
+function Ve(e, t) {
 	return Math.max(0, e - t);
 }
-function Re(e, t) {
+function He(e, t) {
 	let n = e.toLowerCase();
 	return /wolf|goji|berr/.test(n) ? "mdi:fruit-cherries" : /flower|scent/.test(n) ? "mdi:flower-tulip" : n.includes("tea") ? "mdi:tea" : t <= 50 || n.includes("water") ? "mdi:cup-water" : "mdi:cup";
 }
-function ze(e, t = {}) {
+function Ue(e, t = {}) {
 	return typeof e != "string" || !e.trim() ? [] : e.trim().split("_").map((e, n) => {
 		let [r, i, a, o, s] = e.split(","), c = r?.trim(), l = Number(i), u = Number(o), d = Number(s);
 		if (!(!c || !Number.isFinite(l) || !Number.isFinite(u) || !Number.isFinite(d))) return {
@@ -1317,42 +1445,42 @@ function ze(e, t = {}) {
 			keepTemperature: u,
 			duration: d,
 			mode: 10 + n,
-			icon: t[c] || Re(c, l)
+			icon: t[c] || He(c, l)
 		};
 	}).filter((e) => e !== void 0).slice(0, 6);
 }
-function Be(e, t) {
-	return e === 0 ? "Manual" : e === 1 ? "Boil" : t.find((t) => t.mode === e)?.name;
+function We(e, t, n = "en") {
+	return e === 0 ? J(n, "common.manual") : e === 1 ? J(n, "common.boil") : t.find((t) => t.mode === e)?.name;
 }
-function Ve(e, t) {
-	let n = e?.attributes ?? {}, r = Number(n["kettle.status"]), i = Number(n["kettle.fault"]) || 0;
-	if (i) return {
-		code: r,
-		fault: i,
+function Ge(e, t, n = "en") {
+	let r = e?.attributes ?? {}, i = Number(r["kettle.status"]), a = Number(r["kettle.fault"]) || 0;
+	if (a) return {
+		code: i,
+		fault: a,
 		lifted: t,
-		label: `Fault · code ${i}`,
+		label: J(n, "status.fault", { code: a }),
 		tone: "fault"
 	};
 	if (t) return {
-		code: r,
-		fault: i,
+		code: i,
+		fault: a,
 		lifted: t,
-		label: "Lifted from base",
+		label: J(n, "status.lifted"),
 		tone: "lifted"
 	};
-	let [a, o] = {
-		0: ["Ready", "idle"],
-		1: ["Heating", "hot"],
-		2: ["Boiling", "hot"],
-		3: ["Cooling", "cool"],
-		4: ["Keeping warm", "warm"]
-	}[r] ?? ["Unavailable", "idle"];
+	let [o, s] = {
+		0: [J(n, "status.ready"), "idle"],
+		1: [J(n, "status.heating"), "hot"],
+		2: [J(n, "status.boiling"), "hot"],
+		3: [J(n, "status.cooling"), "cool"],
+		4: [J(n, "status.keeping_warm"), "warm"]
+	}[i] ?? [J(n, "status.unavailable"), "idle"];
 	return {
-		code: r,
-		fault: i,
+		code: i,
+		fault: a,
 		lifted: t,
-		label: a,
-		tone: o
+		label: o,
+		tone: s
 	};
 }
 //#endregion
@@ -1365,7 +1493,7 @@ async function Z(e, t, n) {
 	}, void 0, !0), i = r?.response?.result ?? r?.service_response?.result ?? r?.result ?? [], a = i.filter((e) => Number(e.code) !== 0);
 	if (i.length && a.length === i.length) throw Error("Kettle command was rejected");
 }
-function He(e, t, n) {
+function Ke(e, t, n) {
 	return Z(e, t, [
 		{
 			did: "set-2-4",
@@ -1399,7 +1527,7 @@ function He(e, t, n) {
 		}
 	]);
 }
-function Ue(e, t, n, r, i, a) {
+function qe(e, t, n, r, i, a) {
 	return Z(e, t, [
 		{
 			did: "set-2-4",
@@ -1439,7 +1567,7 @@ function Ue(e, t, n, r, i, a) {
 		}
 	]);
 }
-function We(e, t, n, r, i) {
+function Je(e, t, n, r, i) {
 	return Z(e, t, [
 		{
 			did: "set-2-4",
@@ -1485,7 +1613,7 @@ function Q(e, t, n) {
 	let r = Number(t ? e.states[t]?.state : void 0);
 	return Number.isFinite(r) ? r : n;
 }
-var Ge = class extends G {
+var Ye = class extends U {
 	static {
 		this.properties = {
 			hass: { attribute: !1 },
@@ -1506,7 +1634,7 @@ var Ge = class extends G {
 		};
 	}
 	static {
-		this.styles = Ie;
+		this.styles = Re;
 	}
 	constructor() {
 		super(), this._armedUntil = 0, this._busy = !1, this.entityId = "", this.pollInterval = 5, this.cardMode = !1, this.showControls = !0, this.showPresets = !0, this.showPreferences = !0;
@@ -1518,7 +1646,7 @@ var Ge = class extends G {
 		window.clearTimeout(this._armTimer), window.clearInterval(this._pollTimer), super.disconnectedCallback();
 	}
 	_resolve() {
-		return this.hass && this.entityId ? Fe(this.hass, this.entityId) : void 0;
+		return this.hass && this.entityId ? Le(this.hass, this.entityId) : void 0;
 	}
 	_refresh() {
 		let e = this._resolve()?.sourceMain;
@@ -1528,19 +1656,19 @@ var Ge = class extends G {
 		return this.hass.callService("button", "press", { entity_id: e });
 	}
 	_startManual(e, t, n, r, i) {
-		return e.start ? this._press(e.start) : Ue(this.hass, e.sourceMain, t, n, r, i);
+		return e.start ? this._press(e.start) : qe(this.hass, e.sourceMain, t, n, r, i);
 	}
 	_startBoil(e, t, n, r) {
-		return e.boil ? this._press(e.boil) : We(this.hass, e.sourceMain, t, n, r);
+		return e.boil ? this._press(e.boil) : Je(this.hass, e.sourceMain, t, n, r);
 	}
 	_startPreset(e, t) {
 		return e.program ? this.hass.callService("select", "select_option", {
 			entity_id: e.program,
 			option: t.name
-		}) : He(this.hass, e.sourceMain, t);
+		}) : Ke(this.hass, e.sourceMain, t);
 	}
 	_stop(e) {
-		return e.stop ? this._press(e.stop) : Promise.reject(/* @__PURE__ */ Error("Stop is unavailable"));
+		return e.stop ? this._press(e.stop) : Promise.reject(Error(Y(this.hass, "dialog.stop_unavailable")));
 	}
 	_openTemperatureHistory(e) {
 		let t = this.entityId.startsWith("water_heater.") ? this.entityId : e.main;
@@ -1565,16 +1693,16 @@ var Ge = class extends G {
 			window.clearTimeout(this._armTimer), this._armedKey = void 0, this._armedUntil = 0, this._run(t);
 			return;
 		}
-		window.clearTimeout(this._armTimer), this._armedKey = e, this._armedUntil = n + ke, this._error = void 0, this._armTimer = window.setTimeout(() => {
+		window.clearTimeout(this._armTimer), this._armedKey = e, this._armedUntil = n + je, this._error = void 0, this._armTimer = window.setTimeout(() => {
 			this._armedKey === e && (this._armedKey = void 0, this._armedUntil = 0);
-		}, ke);
+		}, je);
 	}
 	async _run(e) {
 		this._busy = !0, this._error = void 0;
 		try {
 			await e();
 		} catch (e) {
-			this._error = e instanceof Error ? e.message : "Kettle command failed";
+			this._error = e instanceof Error ? e.message : Y(this.hass, "dialog.command_failed");
 		} finally {
 			this._busy = !1, this._armedKey = void 0, this._refresh();
 		}
@@ -1589,13 +1717,13 @@ var Ge = class extends G {
 		}));
 	}
 	_toggleRow(e, t, n, r) {
-		if (!e) return R;
+		if (!e) return I;
 		let i = this.hass.states[e]?.state === "on";
-		return I`
+		return P`
       <label class="setting-row">
         <span class="setting-icon"><ha-icon icon=${t}></ha-icon></span>
         <span class="setting-copy">
-          <strong>${n}</strong>${r ? I`<small>${r}</small>` : R}
+          <strong>${n}</strong>${r ? P`<small>${r}</small>` : I}
         </span>
         <input
           class="switch-input"
@@ -1609,9 +1737,9 @@ var Ge = class extends G {
 	}
 	_presetButton(e, t) {
 		let n = this._armedKey === e.key;
-		return I`
+		return P`
       <button
-        class=${K({
+        class=${W({
 			program: !0,
 			armed: n
 		})}
@@ -1621,73 +1749,73 @@ var Ge = class extends G {
       >
         <ha-icon icon=${e.icon}></ha-icon>
         <strong>${e.name}</strong>
-        <small>${n ? "Tap again" : `${e.target}°C`}</small>
+        <small>${n ? Y(this.hass, "common.tap_again") : `${e.target}°C`}</small>
       </button>
     `;
 	}
 	render() {
 		let e = this._resolve();
-		if (!e) return I`<div class="notice">
-        <ha-icon icon="mdi:alert-circle"></ha-icon>Unable to resolve this kettle’s entities.
+		if (!e) return P`<div class="notice">
+        <ha-icon icon="mdi:alert-circle"></ha-icon>${Y(this.hass, "dialog.resolve_error")}
       </div>`;
-		let t = this.hass.states[e.main], n = t?.attributes ?? {}, r = e.lifted ? this.hass.states[e.lifted]?.state === "on" : !1, i = Ve(t, r), a = n.current_temperature ?? n["kettle.temperature"] ?? "—", o = this._values(e), s = Number(n["function.warming_time"] ?? n["function.warming-time"]), c = Q(this.hass, e.warmingTime, Number.isFinite(s) ? s : 0), l = n["function.extended_mode"] ?? n["function.extended-mode"] ?? "", u = n["xiaomi_kettle.preset_icons"], d = ze(l, {
-			...typeof u == "object" && u ? u : {},
+		let t = this.hass.locale?.language, n = this.hass.states[e.main], r = n?.attributes ?? {}, i = e.lifted ? this.hass.states[e.lifted]?.state === "on" : !1, a = Ge(n, i, t), o = r.current_temperature ?? r["kettle.temperature"] ?? "—", s = this._values(e), c = Number(r["function.warming_time"] ?? r["function.warming-time"]), l = Q(this.hass, e.warmingTime, Number.isFinite(c) ? c : 0), u = r["function.extended_mode"] ?? r["function.extended-mode"] ?? "", d = r["xiaomi_kettle.preset_icons"], f = Ue(u, {
+			...typeof d == "object" && d ? d : {},
 			...this.presetIcons ?? {}
-		}), f = !t || t.state === "unavailable", p = i.code === 1 || i.code === 2, m = p || i.code === 4, h = this._armedKey === "start", g = !m && this._armedKey === "boil", _ = d.find((e) => e.key === this._armedKey), v = _ ?? o, y = Number(n["function.target_mode"] ?? n["function.target-mode"]), ee = m && !i.fault && !i.lifted && Number.isFinite(y) ? Be(y, d) : void 0, te = Le(v.duration, _ ? 0 : c), b = [
-			i.code === 4 && !_ ? void 0 : `Target ${v.target}°C`,
-			v.keep ? `Keep ${v.keepTemperature}°C` : void 0,
-			v.keep ? `${X(te)} left` : void 0
-		].filter((e) => !!e).join(" · "), x = g ? "Tap again to boil" : _ ? `Tap again · ${_.name}` : ee ?? i.label;
-		return I`
-      <main class=${K({
+		}), p = !n || n.state === "unavailable", m = a.code === 1 || a.code === 2, h = m || a.code === 4, g = this._armedKey === "start", _ = !h && this._armedKey === "boil", v = f.find((e) => e.key === this._armedKey), y = v ?? s, b = Number(r["function.target_mode"] ?? r["function.target-mode"]), ee = h && !a.fault && !a.lifted && Number.isFinite(b) ? We(b, f, t) : void 0, x = Ve(y.duration, v ? 0 : l), S = [
+			a.code === 4 && !v ? void 0 : Y(this.hass, "dialog.target_summary", { temperature: y.target }),
+			y.keep ? Y(this.hass, "dialog.keep_summary", { temperature: y.keepTemperature }) : void 0,
+			y.keep ? Y(this.hass, "dialog.left_summary", { duration: X(x, t) }) : void 0
+		].filter((e) => !!e).join(" · "), te = _ ? Y(this.hass, "dialog.tap_again_to_boil") : v ? Y(this.hass, "dialog.tap_again_preset", { name: v.name }) : ee ?? a.label;
+		return P`
+      <main class=${W({
 			shell: !0,
 			"card-mode": this.cardMode
 		})}>
-        <section class=${K({
+        <section class=${W({
 			hero: !0,
-			[i.tone]: !0
+			[a.tone]: !0
 		})}>
           <div class="temperature">
             <button
               class="temperature-value"
               type="button"
-              aria-label="Open temperature history"
-              title="Open temperature history"
+              aria-label=${Y(this.hass, "dialog.open_history")}
+              title=${Y(this.hass, "dialog.open_history")}
               @click=${() => this._openTemperatureHistory(e)}
             >
-              <strong>${a}<small>°C</small></strong>
+              <strong>${o}<small>°C</small></strong>
             </button>
             <div class="temperature-copy">
               <div
-                class=${K({
+                class=${W({
 			status: !0,
-			"action-armed": g || !!_
+			"action-armed": _ || !!v
 		})}
               >
                 <span class="status-dot"></span
-                ><span class="status-label">${x}</span>
+                ><span class="status-label">${te}</span>
               </div>
-              <div class=${K({
+              <div class=${W({
 			"hero-meta": !0,
-			preview: !!_
+			preview: !!v
 		})}>
-                ${b}
+                ${S}
               </div>
             </div>
           </div>
           <div class="kettle-action">
             <button
-              class=${K({
+              class=${W({
 			"kettle-art": !0,
-			armed: g
+			armed: _
 		})}
               type="button"
-              aria-label=${m ? "Stop kettle" : g ? "Tap again to boil" : "Boil"}
-              title=${m ? "Stop kettle" : g ? "Tap again to boil" : "Boil"}
-              aria-pressed=${String(!m && g)}
-              ?disabled=${this._busy || f || m && !e.stop}
+              aria-label=${h ? Y(this.hass, "dialog.stop_kettle") : _ ? Y(this.hass, "dialog.tap_again_to_boil") : Y(this.hass, "common.boil")}
+              title=${h ? Y(this.hass, "dialog.stop_kettle") : _ ? Y(this.hass, "dialog.tap_again_to_boil") : Y(this.hass, "common.boil")}
+              aria-pressed=${String(!h && _)}
+              ?disabled=${this._busy || p || h && !e.stop}
               @click=${() => {
-			if (m) {
+			if (h) {
 				this._run(() => this._stop(e));
 				return;
 			}
@@ -1697,33 +1825,36 @@ var Ge = class extends G {
 			});
 		}}
             >
-              <ha-icon icon=${p || g ? "mdi:kettle-steam" : "mdi:kettle"}></ha-icon>
+              <ha-icon icon=${m || _ ? "mdi:kettle-steam" : "mdi:kettle"}></ha-icon>
             </button>
           </div>
         </section>
 
-        ${this._error ? I`<div class="notice">
+        ${this._error ? P`<div class="notice">
                 <ha-icon icon="mdi:alert-circle"></ha-icon>${this._error}
-              </div>` : R}
+              </div>` : I}
 
-        <section class=${K({ offline: f })}>
-          ${this.showPresets ? I`
+        <section class=${W({ offline: p })}>
+          ${this.showPresets ? P`
                   <div class="programs">
-                    ${d.length ? d.map((t) => this._presetButton(t, e)) : I`<p class="empty-programs">No kettle presets available</p>`}
+                    ${f.length ? f.map((t) => this._presetButton(t, e)) : P`<p class="empty-programs">
+                            ${Y(this.hass, "dialog.no_presets")}
+                          </p>`}
                   </div>
-                ` : R}
-          ${this.cardMode ? R : I`<label class="control-card">
+                ` : I}
+          ${this.cardMode ? I : P`<label class="control-card">
                     <span class="control-copy">
-                      <strong>Target temperature</strong><small>Choose from 40 to 99°C</small>
+                      <strong>${Y(this.hass, "dialog.target_temperature")}</strong
+                      ><small>${Y(this.hass, "dialog.target_temperature_help")}</small>
                     </span>
-                    <span class="control-value">${o.target}°C</span>
+                    <span class="control-value">${s.target}°C</span>
                     <input
                       type="range"
                       min="40"
                       max="99"
                       step="1"
-                      .value=${String(o.target)}
-                      aria-label="Target temperature"
+                      .value=${String(s.target)}
+                      aria-label=${Y(this.hass, "dialog.target_temperature")}
                       @input=${(e) => this._target = Number(e.currentTarget.value)}
                       @change=${() => void this._run(() => this.hass.callService("water_heater", "set_temperature", {
 			entity_id: e.main,
@@ -1736,12 +1867,13 @@ var Ge = class extends G {
                     <label class="control-card switch-card">
                       <span class="setting-icon"><ha-icon icon="mdi:heat-wave"></ha-icon></span>
                       <span class="control-copy">
-                        <strong>Keep warm</strong><small>Maintain temperature after heating</small>
+                        <strong>${Y(this.hass, "dialog.keep_warm")}</strong
+                        ><small>${Y(this.hass, "dialog.keep_warm_help")}</small>
                       </span>
                       <input
                         class="switch-input"
                         type="checkbox"
-                        .checked=${o.keep}
+                        .checked=${s.keep}
                         @change=${(t) => {
 			this._keep = t.currentTarget.checked, this._switch(e.keepWarm, this._keep);
 		}}
@@ -1750,64 +1882,68 @@ var Ge = class extends G {
                     </label>
 
                     <label
-                      class=${K({
+                      class=${W({
 			"control-card": !0,
-			disabled: !o.keep
+			disabled: !s.keep
 		})}
-                      aria-disabled=${String(!o.keep)}
+                      aria-disabled=${String(!s.keep)}
                     >
                       <span class="control-copy"
-                        ><strong>Temperature</strong><small>Keep-warm target</small></span
+                        ><strong>${Y(this.hass, "dialog.temperature")}</strong
+                        ><small>${Y(this.hass, "dialog.keep_warm_target")}</small></span
                       >
-                      <span class="control-value">${o.keepTemperature}°C</span>
+                      <span class="control-value">${s.keepTemperature}°C</span>
                       <input
                         type="range"
                         min="0"
                         max="100"
                         step="1"
-                        .value=${String(o.keepTemperature)}
-                        aria-label="Keep-warm temperature"
-                        ?disabled=${this._busy || !o.keep}
+                        .value=${String(s.keepTemperature)}
+                        aria-label=${Y(this.hass, "dialog.keep_warm_temperature")}
+                        ?disabled=${this._busy || !s.keep}
                         @input=${(e) => this._keepTemperature = Number(e.currentTarget.value)}
                         @change=${() => this._setNumber(e.keepTemp, this._values(e).keepTemperature)}
                       />
                     </label>
 
                     <label
-                      class=${K({
+                      class=${W({
 			"control-card": !0,
-			disabled: !o.keep
+			disabled: !s.keep
 		})}
-                      aria-disabled=${String(!o.keep)}
+                      aria-disabled=${String(!s.keep)}
                     >
                       <span class="control-copy"
-                        ><strong>Duration</strong><small>1 to 24 hours</small></span
+                        ><strong>${Y(this.hass, "dialog.duration")}</strong
+                        ><small>${Y(this.hass, "dialog.duration_help")}</small></span
                       >
-                      <span class="control-value">${X(o.duration)}</span>
+                      <span class="control-value"
+                        >${X(s.duration, t)}</span
+                      >
                       <input
                         type="range"
                         min="60"
                         max="1440"
                         step="30"
-                        .value=${String(o.duration)}
-                        aria-label="Keep-warm duration"
-                        ?disabled=${this._busy || !o.keep}
+                        .value=${String(s.duration)}
+                        aria-label=${Y(this.hass, "dialog.keep_warm_duration")}
+                        ?disabled=${this._busy || !s.keep}
                         @input=${(e) => this._keepDuration = Number(e.currentTarget.value)}
                         @change=${() => this._setNumber(e.keepTime, this._values(e).duration)}
                       />
                     </label>
                   </div>`}
-          ${this.showControls ? I`<div class=${K({
+          ${this.showControls ? P`<div class=${W({
 			actions: !0,
 			"card-actions": this.cardMode
 		})}>
-                  ${this.cardMode ? R : I`<button
-                          class=${K({
+                  ${this.cardMode ? I : P`<button
+                          class=${W({
 			button: !0,
 			primary: !0,
-			armed: h
+			armed: g
 		})}
-                          aria-pressed=${String(h)}
+                          aria-pressed=${String(g)}
                           ?disabled=${this._busy}
                           @click=${() => this._arm("start", () => {
 			let t = this._values(e);
@@ -1815,17 +1951,17 @@ var Ge = class extends G {
 		})}
                         >
                           <ha-icon
-                            icon=${h ? "mdi:gesture-double-tap" : "mdi:fire"}
+                            icon=${g ? "mdi:gesture-double-tap" : "mdi:fire"}
                           ></ha-icon>
-                          ${h ? "Tap again" : "Start"}
+                          ${g ? Y(this.hass, "common.tap_again") : Y(this.hass, "common.start")}
                         </button>`}
                   <button
-                    class=${K({
+                    class=${W({
 			button: !0,
 			boil: !0,
-			armed: g
+			armed: _
 		})}
-                    aria-pressed=${String(g)}
+                    aria-pressed=${String(_)}
                     ?disabled=${this._busy}
                     @click=${() => this._arm("boil", () => {
 			let t = this._values(e);
@@ -1833,60 +1969,64 @@ var Ge = class extends G {
 		})}
                   >
                     <ha-icon
-                      icon=${g ? "mdi:gesture-double-tap" : "mdi:kettle-steam"}
+                      icon=${_ ? "mdi:gesture-double-tap" : "mdi:kettle-steam"}
                     ></ha-icon>
-                    ${g ? "Tap again" : "Boil"}
+                    ${_ ? Y(this.hass, "common.tap_again") : Y(this.hass, "common.boil")}
                   </button>
                   <button
                     class="button stop"
                     ?disabled=${this._busy || !e.stop}
                     @click=${() => e.stop && void this._run(() => this._stop(e))}
                   >
-                    <ha-icon icon="mdi:stop-circle-outline"></ha-icon>Stop
+                    <ha-icon icon="mdi:stop-circle-outline"></ha-icon
+                    >${Y(this.hass, "common.stop")}
                   </button>
-                </div>` : R}
-          ${this.showPreferences ? I`<details>
+                </div>` : I}
+          ${this.showPreferences ? P`<details>
                   <summary>
-                    <ha-icon icon="mdi:cog-outline"></ha-icon>Preferences
+                    <ha-icon icon="mdi:cog-outline"></ha-icon
+                    >${Y(this.hass, "dialog.preferences")}
                     <ha-icon class="chevron" icon="mdi:chevron-down"></ha-icon>
                   </summary>
                   <div class="settings">
                     <div class="setting-row">
                       <span class="setting-icon">
                         <ha-icon
-                          icon=${r ? "mdi:kettle-alert" : "mdi:kettle-outline"}
+                          icon=${i ? "mdi:kettle-alert" : "mdi:kettle-outline"}
                         ></ha-icon>
                       </span>
                       <span class="setting-copy">
-                        <strong>Kettle position</strong>
-                        <small>${r ? "Lifted from base" : "Seated on base"}</small>
+                        <strong>${Y(this.hass, "dialog.kettle_position")}</strong>
+                        <small
+                          >${i ? Y(this.hass, "status.lifted") : Y(this.hass, "dialog.seated")}</small
+                        >
                       </span>
                     </div>
-                    ${e.warmingTime ? I`<div class="setting-row">
+                    ${e.warmingTime ? P`<div class="setting-row">
                             <span class="setting-icon"
                               ><ha-icon icon="mdi:timer-sand"></ha-icon
                             ></span>
                             <span class="setting-copy">
-                              <strong>Kept warm</strong
-                              ><small>${X(c)}</small>
+                              <strong>${Y(this.hass, "dialog.kept_warm")}</strong
+                              ><small>${X(l, t)}</small>
                             </span>
-                          </div>` : R}
-                    ${this._toggleRow(e.boilReminder, "mdi:bell-ring-outline", "Boiling reminder")}
-                    ${this._toggleRow(e.warmReminder, "mdi:bell-ring-outline", "Keep-warm reminder")}
-                    ${this._toggleRow(e.liftMemory, "mdi:memory", "Resume after lifting", "Remember the active keep-warm temperature")}
-                    ${this._toggleRow(e.customKnob, "mdi:knob", "Custom knob temperature")}
-                    ${this._toggleRow(e.noDisturb, "mdi:moon-waning-crescent", "Do not disturb")}
+                          </div>` : I}
+                    ${this._toggleRow(e.boilReminder, "mdi:bell-ring-outline", Y(this.hass, "dialog.boiling_reminder"))}
+                    ${this._toggleRow(e.warmReminder, "mdi:bell-ring-outline", Y(this.hass, "dialog.keep_warm_reminder"))}
+                    ${this._toggleRow(e.liftMemory, "mdi:memory", Y(this.hass, "dialog.resume_after_lifting"), Y(this.hass, "dialog.resume_after_lifting_help"))}
+                    ${this._toggleRow(e.customKnob, "mdi:knob", Y(this.hass, "dialog.custom_knob"))}
+                    ${this._toggleRow(e.noDisturb, "mdi:moon-waning-crescent", Y(this.hass, "dialog.do_not_disturb"))}
                   </div>
-                </details>` : R}
+                </details>` : I}
         </section>
       </main>
     `;
 	}
 };
-customElements.get("xiaomi-kettle-dialog-content") || customElements.define(J, Ge);
+customElements.get("xiaomi-kettle-dialog-content") || customElements.define(K, Ye);
 //#endregion
 //#region src/editor.ts
-var Ke = [
+var Xe = [
 	{
 		name: "entity",
 		required: !0,
@@ -1908,20 +2048,20 @@ var Ke = [
 		name: "show_controls",
 		selector: { boolean: {} }
 	}
-], qe = {
-	entity: "Kettle entity",
-	name: "Title",
-	icon: "Icon",
-	show_presets: "Show programs",
-	show_controls: "Show Boil and Stop controls"
-}, Je = class extends G {
+], Ze = {
+	entity: "editor.entity",
+	name: "editor.name",
+	icon: "editor.icon",
+	show_presets: "editor.show_presets",
+	show_controls: "editor.show_controls"
+}, Qe = class extends U {
 	constructor(...e) {
 		super(...e), this._config = {
 			type: "custom:xiaomi-kettle-card",
 			entity: "",
 			show_controls: !0,
 			show_presets: !0
-		};
+		}, this._label = (e) => e.name in Ze ? Y(this.hass, Ze[e.name]) : String(e.name);
 	}
 	static {
 		this.properties = {
@@ -2009,9 +2149,6 @@ var Ke = [
 			...e
 		};
 	}
-	_label(e) {
-		return qe[e.name] ?? String(e.name);
-	}
 	_valueChanged(e) {
 		let t = {
 			...this._config,
@@ -2024,10 +2161,10 @@ var Ke = [
 	}
 	_presets() {
 		if (!this.hass || !this._config.entity) return [];
-		let e = Fe(this.hass, this._config.entity);
+		let e = Le(this.hass, this._config.entity);
 		if (!e) return [];
 		let t = this.hass.states[e.main]?.attributes ?? {}, n = this.hass.states[e.sourceMain]?.attributes ?? {}, r = t["function.extended_mode"] ?? t["function.extended-mode"] ?? n["function.extended_mode"] ?? n["function.extended-mode"], i = t["xiaomi_kettle.preset_icons"];
-		return ze(r, {
+		return Ue(r, {
 			...typeof i == "object" && i ? i : {},
 			...this._config.preset_icons ?? {}
 		});
@@ -2043,18 +2180,18 @@ var Ke = [
 	}
 	render() {
 		let e = this._presets();
-		return I`
+		return P`
       <ha-form
         .hass=${this.hass}
         .data=${this._config}
-        .schema=${Ke}
+        .schema=${Xe}
         .computeLabel=${this._label}
         @value-changed=${this._valueChanged}
       ></ha-form>
-      ${e.length ? I`<section class="preset-icons">
-              <h3>Program icons</h3>
-              <p>Choose an icon for each preset discovered from Xiaomi Home.</p>
-              ${e.map((e) => I`<div class="preset-row">
+      ${e.length ? P`<section class="preset-icons">
+              <h3>${Y(this.hass, "editor.program_icons")}</h3>
+              <p>${Y(this.hass, "editor.program_icons_description")}</p>
+              ${e.map((e) => P`<div class="preset-row">
                     <ha-icon icon=${e.icon}></ha-icon>
                     <span class="preset-copy">
                       <strong>${e.name}</strong>
@@ -2064,7 +2201,7 @@ var Ke = [
                       .hass=${this.hass}
                       .selector=${{ icon: {} }}
                       .value=${this._config.preset_icons?.[e.name] ?? e.icon}
-                      .label=${`${e.name} icon`}
+                      .label=${Y(this.hass, "editor.preset_icon", { name: e.name })}
                       @value-changed=${(t) => this._presetIconChanged(e, t)}
                     ></ha-selector>
                   </div>`)}
@@ -2072,10 +2209,10 @@ var Ke = [
     `;
 	}
 };
-customElements.get("xiaomi-kettle-card-editor") || customElements.define(Ee, Je);
+customElements.get("xiaomi-kettle-card-editor") || customElements.define(Oe, Qe);
 //#endregion
 //#region src/card.ts
-var Ye = class extends G {
+var $e = class extends U {
 	static {
 		this.properties = {
 			hass: { attribute: !1 },
@@ -2144,14 +2281,14 @@ var Ye = class extends G {
 	}
 	static getStubConfig() {
 		return {
-			type: `custom:${q}`,
+			type: `custom:${G}`,
 			entity: "",
 			show_controls: !0,
 			show_presets: !0
 		};
 	}
 	static getConfigElement() {
-		return document.createElement(Ee);
+		return document.createElement(Oe);
 	}
 	setConfig(e) {
 		if (!e.entity && e.entity !== "") throw Error("Please configure a kettle entity.");
@@ -2169,19 +2306,24 @@ var Ye = class extends G {
 	}
 	render() {
 		let e = this._config?.entity;
-		if (!e) return I`<ha-card class="error">Select a yunmi.kettle.v19 water heater entity.</ha-card>`;
+		if (!e) return P`<ha-card class="error">${Y(this.hass, "card.select_entity")}</ha-card>`;
 		let t = this.hass?.states?.[e];
-		if (!t) return I`<ha-card class="loading" aria-label="Kettle is loading">
+		if (!t) return P`<ha-card class="loading" aria-label=${Y(this.hass, "card.loading")}>
         <div class="loading-header">
           <ha-icon icon=${this._config?.icon ?? "mdi:kettle-outline"}></ha-icon>
-          <strong>${this._config?.name ?? "Kettle"}</strong>
+          <strong>${this._config?.name ?? Y(this.hass, "common.kettle")}</strong>
         </div>
-        <hui-warning>Home Assistant is starting. Not everything may be available yet.</hui-warning>
+        <hui-warning>${Y(this.hass, "card.starting")}</hui-warning>
       </ha-card>`;
-		let n = this._config?.name ?? t.attributes.friendly_name ?? "Kettle", r = Number(t.attributes["kettle.status"]), i = r === 1 || r === 2, a = this._config?.icon ?? (i ? "mdi:kettle-steam" : "mdi:kettle");
-		return I`
+		let n = this._config?.name ?? t.attributes.friendly_name ?? Y(this.hass, "common.kettle"), r = Number(t.attributes["kettle.status"]), i = r === 1 || r === 2, a = this._config?.icon ?? (i ? "mdi:kettle-steam" : "mdi:kettle");
+		return P`
       <ha-card>
-        <button class="header" type="button" @click=${this._open} aria-label="Open kettle dialog">
+        <button
+          class="header"
+          type="button"
+          @click=${this._open}
+          aria-label=${Y(this.hass, "card.open_dialog")}
+        >
           <ha-icon icon=${a}></ha-icon>
           <span class="header-copy"><strong>${n}</strong></span>
         </button>
@@ -2198,16 +2340,16 @@ var Ye = class extends G {
     `;
 	}
 };
-customElements.get("xiaomi-kettle-card") || customElements.define(q, Ye), window.customCards = window.customCards ?? [], window.customCards.some((e) => e.type === "xiaomi-kettle-card") || window.customCards.push({
-	type: q,
+customElements.get("xiaomi-kettle-card") || customElements.define(G, $e), window.customCards = window.customCards ?? [], window.customCards.some((e) => e.type === "xiaomi-kettle-card") || window.customCards.push({
+	type: G,
 	name: "Xiaomi Kettle Card",
 	description: "Status and controls for Xiaomi Smart Kettle 2 Pro",
-	documentationURL: De,
+	documentationURL: ke,
 	preview: !0,
 	getEntitySuggestion: (e, t) => {
 		let n = e.entities?.[t]?.device_id, r = n ? e.devices?.[n]?.model?.toLowerCase() : void 0, i = e.states?.[t]?.attributes?.["xiaomi_kettle.source_entity_id"];
 		return r === "yunmi.kettle.v19" || typeof i == "string" ? { config: {
-			type: `custom:${q}`,
+			type: `custom:${G}`,
 			entity: t,
 			show_controls: !0,
 			show_presets: !0
@@ -2216,19 +2358,19 @@ customElements.get("xiaomi-kettle-card") || customElements.define(q, Ye), window
 });
 //#endregion
 //#region src/more-info-interceptor.ts
-function Xe(e, t) {
+function et(e, t) {
 	for (let n of Array.from(e.children)) {
 		if (n === t) continue;
 		let e = n;
 		e.hidden = !1, e.inert = !1, e.removeAttribute("aria-hidden"), e.style.removeProperty("display");
 	}
 }
-function Ze(e) {
+function tt(e) {
 	let t = e.shadowRoot?.querySelector(".content");
 	if (!t) return;
-	let n = t.querySelector(`:scope > ${J}`);
+	let n = t.querySelector(`:scope > ${K}`);
 	if (e.__xiaomiKettleContent !== !0 || e._currView !== "info") {
-		Xe(t, n ?? void 0), n?.remove();
+		et(t, n ?? void 0), n?.remove();
 		return;
 	}
 	for (let e of Array.from(t.children)) {
@@ -2236,29 +2378,29 @@ function Ze(e) {
 		let t = e;
 		t.hidden = !0, t.inert = !0, t.setAttribute("aria-hidden", "true"), t.style.setProperty("display", "none", "important");
 	}
-	n || (n = document.createElement(J), t.append(n)), n.hass = e.hass, n.entityId = e.__xiaomiKettleSourceEntity ?? "";
+	n || (n = document.createElement(K), t.append(n)), n.hass = e.hass, n.entityId = e.__xiaomiKettleSourceEntity ?? "";
 }
-async function Qe() {
+async function nt() {
 	await customElements.whenDefined("ha-more-info-dialog");
 	let e = customElements.get("ha-more-info-dialog")?.prototype;
 	if (!e || e.__xiaomiKettlePatched) return;
 	let t = e.showDialog, n = e.updated;
 	e.__xiaomiKettlePatched = !0, e.showDialog = function(e) {
-		let n = Pe(e.entityId ? this.hass : void 0, e.entityId);
+		let n = Ie(e.entityId ? this.hass : void 0, e.entityId);
 		return this.__xiaomiKettleContent = n, this.__xiaomiKettleSourceEntity = n ? e.entityId : void 0, t.call(this, e);
 	}, e.updated = function(e) {
 		let t = n?.call(this, e);
-		return queueMicrotask(() => Ze(this)), t;
+		return queueMicrotask(() => tt(this)), t;
 	};
 }
 //#endregion
 //#region src/notification-icon-interceptor.ts
-var $ = "persistent-notification-item", $e = "xiaomi_kettle_", et = "/xiaomi-kettle/icon.png", tt = "data-xiaomi-kettle-icon";
-function nt(e) {
+var $ = "persistent-notification-item", rt = "xiaomi_kettle_", it = "/xiaomi-kettle/icon.png", at = "data-xiaomi-kettle-icon";
+function ot(e) {
 	let t = e.shadowRoot;
 	if (!t) return;
-	let n = t.querySelector(`img[${tt}]`);
-	if (e.notification?.notification_id?.startsWith($e) !== !0) {
+	let n = t.querySelector(`img[${at}]`);
+	if (e.notification?.notification_id?.startsWith(rt) !== !0) {
 		n?.remove();
 		return;
 	}
@@ -2266,7 +2408,7 @@ function nt(e) {
 	let r = t.querySelector("[slot=\"header\"]");
 	if (!r?.parentElement) return;
 	let i = document.createElement("img");
-	i.setAttribute(tt, ""), i.setAttribute("aria-hidden", "true"), i.setAttribute("slot", "header"), i.src = et, i.alt = "", i.style.cssText = [
+	i.setAttribute(at, ""), i.setAttribute("aria-hidden", "true"), i.setAttribute("slot", "header"), i.src = it, i.alt = "", i.style.cssText = [
 		"width:32px",
 		"height:32px",
 		"object-fit:contain",
@@ -2274,22 +2416,22 @@ function nt(e) {
 		"margin-inline-end:10px"
 	].join(";"), r.before(i);
 }
-function rt(e) {
-	for (let t of e.querySelectorAll("*")) t.localName === $ && nt(t), t.shadowRoot && rt(t.shadowRoot);
+function st(e) {
+	for (let t of e.querySelectorAll("*")) t.localName === $ && ot(t), t.shadowRoot && st(t.shadowRoot);
 }
-async function it() {
+async function ct() {
 	await customElements.whenDefined($);
 	let e = customElements.get($)?.prototype;
 	if (!e || e.__xiaomiKettleIconPatched) return;
 	let t = e.updated;
 	e.__xiaomiKettleIconPatched = !0, e.updated = function(e) {
 		let n = t?.call(this, e);
-		return queueMicrotask(() => nt(this)), n;
-	}, queueMicrotask(() => rt(document));
+		return queueMicrotask(() => ot(this)), n;
+	}, queueMicrotask(() => st(document));
 }
 //#endregion
 //#region src/startup-recovery.ts
-function at(e = document) {
+function lt(e = document) {
 	let t = /* @__PURE__ */ new Set(), n = (e) => {
 		e.querySelectorAll("hui-error-card").forEach((e) => t.add(e)), e.querySelectorAll("*").forEach((e) => {
 			e.shadowRoot && n(e.shadowRoot);
@@ -2300,13 +2442,13 @@ function at(e = document) {
 		composed: !0
 	})));
 }
-function ot() {
+function ut() {
 	for (let e of [
 		0,
 		250,
 		1e3,
 		2500
-	]) window.setTimeout(() => at(), e);
+	]) window.setTimeout(() => lt(), e);
 }
-Qe(), it(), ot(), console.info("%c XIAOMI-KETTLE-CARD %c 0.1.0 ", "color:white;background:#03a9f4;font-weight:700", "color:#03a9f4;background:transparent");
+nt(), ct(), ut(), console.info("%c XIAOMI-KETTLE-CARD %c 0.1.1 ", "color:white;background:#03a9f4;font-weight:700", "color:#03a9f4;background:transparent");
 //#endregion

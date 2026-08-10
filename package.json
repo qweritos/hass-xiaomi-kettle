@@ -1,6 +1,6 @@
 {
   "name": "hass-xiaomi-kettle",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A human-friendly Home Assistant integration and UI for Xiaomi Smart Kettle 2 Pro.",
   "keywords": [
     "home-assistant",
@@ -52,6 +52,7 @@
   "files": [
     "custom_components/xiaomi_kettle",
     "README.md",
+    "README.ru.md",
     "LICENSE"
   ]
 }

@@ -11,6 +11,7 @@ import {
   programNameForMode,
   remainingKeepWarmMinutes,
 } from './kettle';
+import { localize } from './localize';
 import { startBoil, startManual, startPreset } from './miot';
 import type { KettleHass, KettlePreset, ResolvedKettleEntities } from './types';
 
@@ -133,7 +134,7 @@ export class XiaomiKettleDialogContent extends LitElement {
   private _stop(entities: ResolvedKettleEntities): Promise<void> {
     return entities.stop
       ? this._press(entities.stop)
-      : Promise.reject(new Error('Stop is unavailable'));
+      : Promise.reject(new Error(localize(this.hass, 'dialog.stop_unavailable')));
   }
 
   private _openTemperatureHistory(entities: ResolvedKettleEntities): void {
@@ -189,7 +190,8 @@ export class XiaomiKettleDialogContent extends LitElement {
     try {
       await action();
     } catch (error) {
-      this._error = error instanceof Error ? error.message : 'Kettle command failed';
+      this._error =
+        error instanceof Error ? error.message : localize(this.hass, 'dialog.command_failed');
     } finally {
       this._busy = false;
       this._armedKey = undefined;
@@ -250,7 +252,7 @@ export class XiaomiKettleDialogContent extends LitElement {
       >
         <ha-icon icon=${preset.icon}></ha-icon>
         <strong>${preset.name}</strong>
-        <small>${armed ? 'Tap again' : `${preset.target}°C`}</small>
+        <small>${armed ? localize(this.hass, 'common.tap_again') : `${preset.target}°C`}</small>
       </button>
     `;
   }
@@ -259,14 +261,16 @@ export class XiaomiKettleDialogContent extends LitElement {
     const entities = this._resolve();
     if (!entities) {
       return html`<div class="notice">
-        <ha-icon icon="mdi:alert-circle"></ha-icon>Unable to resolve this kettle’s entities.
+        <ha-icon icon="mdi:alert-circle"></ha-icon>${localize(this.hass, 'dialog.resolve_error')}
       </div>`;
     }
+
+    const language = this.hass.locale?.language;
 
     const heater = this.hass.states[entities.main];
     const attributes = heater?.attributes ?? {};
     const lifted = entities.lifted ? this.hass.states[entities.lifted]?.state === 'on' : false;
-    const status = getStatus(heater, lifted);
+    const status = getStatus(heater, lifted, language);
     const current = attributes.current_temperature ?? attributes['kettle.temperature'] ?? '—';
     const values = this._values(entities);
     const attributeWarmingTime = Number(
@@ -298,23 +302,35 @@ export class XiaomiKettleDialogContent extends LitElement {
     );
     const activeProgram =
       active && !status.fault && !status.lifted && Number.isFinite(targetMode)
-        ? programNameForMode(targetMode, presets)
+        ? programNameForMode(targetMode, presets, language)
         : undefined;
     const remainingKeepWarm = remainingKeepWarmMinutes(
       displayValues.duration,
       armedPreset ? 0 : warmingTime,
     );
     const summary = [
-      status.code === 4 && !armedPreset ? undefined : `Target ${displayValues.target}°C`,
-      displayValues.keep ? `Keep ${displayValues.keepTemperature}°C` : undefined,
-      displayValues.keep ? `${formatDuration(remainingKeepWarm)} left` : undefined,
+      status.code === 4 && !armedPreset
+        ? undefined
+        : localize(this.hass, 'dialog.target_summary', {
+            temperature: displayValues.target,
+          }),
+      displayValues.keep
+        ? localize(this.hass, 'dialog.keep_summary', {
+            temperature: displayValues.keepTemperature,
+          })
+        : undefined,
+      displayValues.keep
+        ? localize(this.hass, 'dialog.left_summary', {
+            duration: formatDuration(remainingKeepWarm, language),
+          })
+        : undefined,
     ]
       .filter((part): part is string => Boolean(part))
       .join(' · ');
     const confirmationStatus = boilArmed
-      ? 'Tap again to boil'
+      ? localize(this.hass, 'dialog.tap_again_to_boil')
       : armedPreset
-        ? `Tap again · ${armedPreset.name}`
+        ? localize(this.hass, 'dialog.tap_again_preset', { name: armedPreset.name })
         : (activeProgram ?? status.label);
 
     return html`
@@ -324,8 +340,8 @@ export class XiaomiKettleDialogContent extends LitElement {
             <button
               class="temperature-value"
               type="button"
-              aria-label="Open temperature history"
-              title="Open temperature history"
+              aria-label=${localize(this.hass, 'dialog.open_history')}
+              title=${localize(this.hass, 'dialog.open_history')}
               @click=${() => this._openTemperatureHistory(entities)}
             >
               <strong>${current}<small>°C</small></strong>
@@ -349,8 +365,20 @@ export class XiaomiKettleDialogContent extends LitElement {
             <button
               class=${classMap({ 'kettle-art': true, armed: boilArmed })}
               type="button"
-              aria-label=${active ? 'Stop kettle' : boilArmed ? 'Tap again to boil' : 'Boil'}
-              title=${active ? 'Stop kettle' : boilArmed ? 'Tap again to boil' : 'Boil'}
+              aria-label=${
+                active
+                  ? localize(this.hass, 'dialog.stop_kettle')
+                  : boilArmed
+                    ? localize(this.hass, 'dialog.tap_again_to_boil')
+                    : localize(this.hass, 'common.boil')
+              }
+              title=${
+                active
+                  ? localize(this.hass, 'dialog.stop_kettle')
+                  : boilArmed
+                    ? localize(this.hass, 'dialog.tap_again_to_boil')
+                    : localize(this.hass, 'common.boil')
+              }
               aria-pressed=${String(!active && boilArmed)}
               ?disabled=${this._busy || unavailable || (active && !entities.stop)}
               @click=${() => {
@@ -390,7 +418,9 @@ export class XiaomiKettleDialogContent extends LitElement {
                     ${
                       presets.length
                         ? presets.map((preset) => this._presetButton(preset, entities))
-                        : html`<p class="empty-programs">No kettle presets available</p>`
+                        : html`<p class="empty-programs">
+                            ${localize(this.hass, 'dialog.no_presets')}
+                          </p>`
                     }
                   </div>
                 `
@@ -400,7 +430,8 @@ export class XiaomiKettleDialogContent extends LitElement {
             !this.cardMode
               ? html`<label class="control-card">
                     <span class="control-copy">
-                      <strong>Target temperature</strong><small>Choose from 40 to 99°C</small>
+                      <strong>${localize(this.hass, 'dialog.target_temperature')}</strong
+                      ><small>${localize(this.hass, 'dialog.target_temperature_help')}</small>
                     </span>
                     <span class="control-value">${values.target}°C</span>
                     <input
@@ -409,7 +440,7 @@ export class XiaomiKettleDialogContent extends LitElement {
                       max="99"
                       step="1"
                       .value=${String(values.target)}
-                      aria-label="Target temperature"
+                      aria-label=${localize(this.hass, 'dialog.target_temperature')}
                       @input=${(event: Event) =>
                         (this._target = Number((event.currentTarget as HTMLInputElement).value))}
                       @change=${() =>
@@ -426,7 +457,8 @@ export class XiaomiKettleDialogContent extends LitElement {
                     <label class="control-card switch-card">
                       <span class="setting-icon"><ha-icon icon="mdi:heat-wave"></ha-icon></span>
                       <span class="control-copy">
-                        <strong>Keep warm</strong><small>Maintain temperature after heating</small>
+                        <strong>${localize(this.hass, 'dialog.keep_warm')}</strong
+                        ><small>${localize(this.hass, 'dialog.keep_warm_help')}</small>
                       </span>
                       <input
                         class="switch-input"
@@ -445,7 +477,8 @@ export class XiaomiKettleDialogContent extends LitElement {
                       aria-disabled=${String(!values.keep)}
                     >
                       <span class="control-copy"
-                        ><strong>Temperature</strong><small>Keep-warm target</small></span
+                        ><strong>${localize(this.hass, 'dialog.temperature')}</strong
+                        ><small>${localize(this.hass, 'dialog.keep_warm_target')}</small></span
                       >
                       <span class="control-value">${values.keepTemperature}°C</span>
                       <input
@@ -454,7 +487,7 @@ export class XiaomiKettleDialogContent extends LitElement {
                         max="100"
                         step="1"
                         .value=${String(values.keepTemperature)}
-                        aria-label="Keep-warm temperature"
+                        aria-label=${localize(this.hass, 'dialog.keep_warm_temperature')}
                         ?disabled=${this._busy || !values.keep}
                         @input=${(event: Event) =>
                           (this._keepTemperature = Number(
@@ -473,16 +506,19 @@ export class XiaomiKettleDialogContent extends LitElement {
                       aria-disabled=${String(!values.keep)}
                     >
                       <span class="control-copy"
-                        ><strong>Duration</strong><small>1 to 24 hours</small></span
+                        ><strong>${localize(this.hass, 'dialog.duration')}</strong
+                        ><small>${localize(this.hass, 'dialog.duration_help')}</small></span
                       >
-                      <span class="control-value">${formatDuration(values.duration)}</span>
+                      <span class="control-value"
+                        >${formatDuration(values.duration, language)}</span
+                      >
                       <input
                         type="range"
                         min="60"
                         max="1440"
                         step="30"
                         .value=${String(values.duration)}
-                        aria-label="Keep-warm duration"
+                        aria-label=${localize(this.hass, 'dialog.keep_warm_duration')}
                         ?disabled=${this._busy || !values.keep}
                         @input=${(event: Event) =>
                           (this._keepDuration = Number(
@@ -518,7 +554,11 @@ export class XiaomiKettleDialogContent extends LitElement {
                           <ha-icon
                             icon=${startArmed ? 'mdi:gesture-double-tap' : 'mdi:fire'}
                           ></ha-icon>
-                          ${startArmed ? 'Tap again' : 'Start'}
+                          ${
+                            startArmed
+                              ? localize(this.hass, 'common.tap_again')
+                              : localize(this.hass, 'common.start')
+                          }
                         </button>`
                       : nothing
                   }
@@ -540,14 +580,19 @@ export class XiaomiKettleDialogContent extends LitElement {
                     <ha-icon
                       icon=${boilArmed ? 'mdi:gesture-double-tap' : 'mdi:kettle-steam'}
                     ></ha-icon>
-                    ${boilArmed ? 'Tap again' : 'Boil'}
+                    ${
+                      boilArmed
+                        ? localize(this.hass, 'common.tap_again')
+                        : localize(this.hass, 'common.boil')
+                    }
                   </button>
                   <button
                     class="button stop"
                     ?disabled=${this._busy || !entities.stop}
                     @click=${() => entities.stop && void this._run(() => this._stop(entities))}
                   >
-                    <ha-icon icon="mdi:stop-circle-outline"></ha-icon>Stop
+                    <ha-icon icon="mdi:stop-circle-outline"></ha-icon
+                    >${localize(this.hass, 'common.stop')}
                   </button>
                 </div>`
               : nothing
@@ -556,7 +601,8 @@ export class XiaomiKettleDialogContent extends LitElement {
             this.showPreferences
               ? html`<details>
                   <summary>
-                    <ha-icon icon="mdi:cog-outline"></ha-icon>Preferences
+                    <ha-icon icon="mdi:cog-outline"></ha-icon
+                    >${localize(this.hass, 'dialog.preferences')}
                     <ha-icon class="chevron" icon="mdi:chevron-down"></ha-icon>
                   </summary>
                   <div class="settings">
@@ -567,8 +613,14 @@ export class XiaomiKettleDialogContent extends LitElement {
                         ></ha-icon>
                       </span>
                       <span class="setting-copy">
-                        <strong>Kettle position</strong>
-                        <small>${lifted ? 'Lifted from base' : 'Seated on base'}</small>
+                        <strong>${localize(this.hass, 'dialog.kettle_position')}</strong>
+                        <small
+                          >${
+                            lifted
+                              ? localize(this.hass, 'status.lifted')
+                              : localize(this.hass, 'dialog.seated')
+                          }</small
+                        >
                       </span>
                     </div>
                     ${
@@ -578,22 +630,38 @@ export class XiaomiKettleDialogContent extends LitElement {
                               ><ha-icon icon="mdi:timer-sand"></ha-icon
                             ></span>
                             <span class="setting-copy">
-                              <strong>Kept warm</strong
-                              ><small>${formatDuration(warmingTime)}</small>
+                              <strong>${localize(this.hass, 'dialog.kept_warm')}</strong
+                              ><small>${formatDuration(warmingTime, language)}</small>
                             </span>
                           </div>`
                         : nothing
                     }
-                    ${this._toggleRow(entities.boilReminder, 'mdi:bell-ring-outline', 'Boiling reminder')}
-                    ${this._toggleRow(entities.warmReminder, 'mdi:bell-ring-outline', 'Keep-warm reminder')}
+                    ${this._toggleRow(
+                      entities.boilReminder,
+                      'mdi:bell-ring-outline',
+                      localize(this.hass, 'dialog.boiling_reminder'),
+                    )}
+                    ${this._toggleRow(
+                      entities.warmReminder,
+                      'mdi:bell-ring-outline',
+                      localize(this.hass, 'dialog.keep_warm_reminder'),
+                    )}
                     ${this._toggleRow(
                       entities.liftMemory,
                       'mdi:memory',
-                      'Resume after lifting',
-                      'Remember the active keep-warm temperature',
+                      localize(this.hass, 'dialog.resume_after_lifting'),
+                      localize(this.hass, 'dialog.resume_after_lifting_help'),
                     )}
-                    ${this._toggleRow(entities.customKnob, 'mdi:knob', 'Custom knob temperature')}
-                    ${this._toggleRow(entities.noDisturb, 'mdi:moon-waning-crescent', 'Do not disturb')}
+                    ${this._toggleRow(
+                      entities.customKnob,
+                      'mdi:knob',
+                      localize(this.hass, 'dialog.custom_knob'),
+                    )}
+                    ${this._toggleRow(
+                      entities.noDisturb,
+                      'mdi:moon-waning-crescent',
+                      localize(this.hass, 'dialog.do_not_disturb'),
+                    )}
                   </div>
                 </details>`
               : nothing

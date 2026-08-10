@@ -56,6 +56,10 @@ describe('formatDuration', () => {
     expect(formatDuration(90)).toBe('1 h 30 min');
     expect(formatDuration(1440)).toBe('24 h');
   });
+
+  it('formats Russian duration units', () => {
+    expect(formatDuration(90, 'ru')).toBe('1 ч 30 мин');
+  });
 });
 
 describe('active program and keep-warm time', () => {
@@ -68,6 +72,11 @@ describe('active program and keep-warm time', () => {
     expect(programNameForMode(1, presets)).toBe('Boil');
     expect(programNameForMode(11, presets)).toBe('Scented tea');
     expect(programNameForMode(15, presets)).toBeUndefined();
+  });
+
+  it('localizes built-in target modes', () => {
+    expect(programNameForMode(0, presets, 'ru')).toBe('Вручную');
+    expect(programNameForMode(1, presets, 'ru')).toBe('Вскипятить');
   });
 
   it('subtracts elapsed keep-warm time without returning a negative value', () => {
@@ -89,5 +98,6 @@ describe('getStatus', () => {
 
     expect(getStatus(entity, false)).toMatchObject({ label: 'Heating', tone: 'hot' });
     expect(getStatus(entity, true)).toMatchObject({ label: 'Lifted from base', tone: 'lifted' });
+    expect(getStatus(entity, false, 'ru')).toMatchObject({ label: 'Нагрев', tone: 'hot' });
   });
 });
