@@ -5,7 +5,6 @@ from __future__ import annotations
 import logging
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, fields, replace
-from datetime import timedelta
 from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
@@ -16,7 +15,6 @@ from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.event import (
     async_call_later,
     async_track_state_change_event,
-    async_track_time_interval,
 )
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
@@ -29,7 +27,6 @@ from .const import (
     DOMAIN,
     ENTITY_SUFFIXES,
     OPTIMISTIC_TIMEOUT,
-    POLL_INTERVAL,
 )
 from .miot import async_start_boil, async_start_manual, async_start_preset
 from .model import (
@@ -136,7 +133,6 @@ class KettleCoordinator(DataUpdateCoordinator[KettleData]):
         self.entry = entry
         self.sources = sources
         self._transition_listeners: list[Callable[[str, KettleData], None]] = []
-        self._polling = False
         self._authoritative_data: KettleData | None = None
         self._optimistic_changes: dict[str, Any] = {}
         self._cancel_optimistic_timeout: Callable[[], None] | None = None
@@ -195,18 +191,10 @@ class KettleCoordinator(DataUpdateCoordinator[KettleData]):
         )
 
     async def async_start(self) -> None:
-        """Start state and one-second refresh listeners."""
+        """Subscribe to source-state changes."""
         self.entry.async_on_unload(
             async_track_state_change_event(
                 self.hass, self.sources.all, self._async_handle_source_change
-            )
-        )
-        self.entry.async_on_unload(
-            async_track_time_interval(
-                self.hass,
-                self._async_poll_source,
-                timedelta(seconds=POLL_INTERVAL),
-                name=f"{self.entry.title} refresh",
             )
         )
 
@@ -271,22 +259,6 @@ class KettleCoordinator(DataUpdateCoordinator[KettleData]):
                     OPTIMISTIC_TIMEOUT,
                     self._async_clear_optimistic,
                 )
-
-    async def _async_poll_source(self, now: Any) -> None:
-        if self._polling:
-            return
-        self._polling = True
-        try:
-            await self.hass.services.async_call(
-                "homeassistant",
-                "update_entity",
-                {"entity_id": self.sources.main},
-                blocking=True,
-            )
-        except Exception:  # Home Assistant will log source availability separately.
-            _LOGGER.debug("Unable to refresh %s", self.sources.main, exc_info=True)
-        finally:
-            self._polling = False
 
     @callback
     def async_add_transition_listener(

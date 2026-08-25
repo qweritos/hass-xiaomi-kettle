@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2
+
+- Replaced backend and frontend status polling with source-state subscriptions.
+- Eliminated recurring `homeassistant.update_entity` service events from Recorder.
+
 ## 0.1.1
 
 - Added Russian translations for setup, preferences, entities, states, and errors.

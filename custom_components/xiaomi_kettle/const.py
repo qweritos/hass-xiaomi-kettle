@@ -3,7 +3,7 @@
 from homeassistant.const import Platform
 
 DOMAIN = "xiaomi_kettle"
-VERSION = "0.1.1"
+VERSION = "0.1.2"
 
 PLATFORMS = [
     Platform.BUTTON,
@@ -23,7 +23,6 @@ CONF_NOTIFY_EVENTS = "notify_events"
 CONF_PRESET_ICONS = "preset_icons"
 
 DEFAULT_NOTIFY_EVENTS = ["finished"]
-POLL_INTERVAL = 1
 OPTIMISTIC_TIMEOUT = 10
 NOTIFICATION_EVENTS = ["heating_started", "boiling", "finished", "lifted", "fault"]
 

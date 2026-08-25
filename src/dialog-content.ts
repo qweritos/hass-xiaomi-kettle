@@ -1,7 +1,7 @@
 import { fireEvent } from 'custom-card-helpers';
 import { LitElement, html, nothing, type TemplateResult } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { ARM_TIMEOUT, CONTENT_TAG, DEFAULT_POLL_INTERVAL } from './constants';
+import { ARM_TIMEOUT, CONTENT_TAG } from './constants';
 import { resolveKettleEntities } from './device';
 import { dialogStyles } from './dialog-styles';
 import {
@@ -24,7 +24,6 @@ export class XiaomiKettleDialogContent extends LitElement {
   static override properties = {
     hass: { attribute: false },
     entityId: { attribute: false },
-    pollInterval: { attribute: false },
     cardMode: { attribute: false },
     showControls: { attribute: false },
     showPresets: { attribute: false },
@@ -43,7 +42,6 @@ export class XiaomiKettleDialogContent extends LitElement {
 
   declare hass: KettleHass;
   declare entityId: string;
-  declare pollInterval: number;
   declare cardMode: boolean;
   declare showControls: boolean;
   declare showPresets: boolean;
@@ -59,40 +57,23 @@ export class XiaomiKettleDialogContent extends LitElement {
   private _keepTemperature?: number;
   private _keepDuration?: number;
   private _armTimer?: number;
-  private _pollTimer?: number;
 
   constructor() {
     super();
     this.entityId = '';
-    this.pollInterval = DEFAULT_POLL_INTERVAL;
     this.cardMode = false;
     this.showControls = true;
     this.showPresets = true;
     this.showPreferences = true;
   }
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-    this._pollTimer = window.setInterval(() => this._refresh(), this.pollInterval * 1_000);
-    queueMicrotask(() => this._refresh());
-  }
-
   override disconnectedCallback(): void {
     window.clearTimeout(this._armTimer);
-    window.clearInterval(this._pollTimer);
     super.disconnectedCallback();
   }
 
   private _resolve(): ResolvedKettleEntities | undefined {
     return this.hass && this.entityId ? resolveKettleEntities(this.hass, this.entityId) : undefined;
-  }
-
-  private _refresh(): void {
-    const entityId = this._resolve()?.sourceMain;
-    if (!entityId) return;
-    void this.hass
-      .callService('homeassistant', 'update_entity', { entity_id: entityId })
-      .catch(() => undefined);
   }
 
   private _press(entityId: string): Promise<void> {
@@ -195,7 +176,6 @@ export class XiaomiKettleDialogContent extends LitElement {
     } finally {
       this._busy = false;
       this._armedKey = undefined;
-      this._refresh();
     }
   }
 

@@ -1618,7 +1618,6 @@ var Ye = class extends U {
 		this.properties = {
 			hass: { attribute: !1 },
 			entityId: { attribute: !1 },
-			pollInterval: { attribute: !1 },
 			cardMode: { attribute: !1 },
 			showControls: { attribute: !1 },
 			showPresets: { attribute: !1 },
@@ -1637,20 +1636,13 @@ var Ye = class extends U {
 		this.styles = Re;
 	}
 	constructor() {
-		super(), this._armedUntil = 0, this._busy = !1, this.entityId = "", this.pollInterval = 5, this.cardMode = !1, this.showControls = !0, this.showPresets = !0, this.showPreferences = !0;
-	}
-	connectedCallback() {
-		super.connectedCallback(), this._pollTimer = window.setInterval(() => this._refresh(), this.pollInterval * 1e3), queueMicrotask(() => this._refresh());
+		super(), this._armedUntil = 0, this._busy = !1, this.entityId = "", this.cardMode = !1, this.showControls = !0, this.showPresets = !0, this.showPreferences = !0;
 	}
 	disconnectedCallback() {
-		window.clearTimeout(this._armTimer), window.clearInterval(this._pollTimer), super.disconnectedCallback();
+		window.clearTimeout(this._armTimer), super.disconnectedCallback();
 	}
 	_resolve() {
 		return this.hass && this.entityId ? Le(this.hass, this.entityId) : void 0;
-	}
-	_refresh() {
-		let e = this._resolve()?.sourceMain;
-		e && this.hass.callService("homeassistant", "update_entity", { entity_id: e }).catch(() => void 0);
 	}
 	_press(e) {
 		return this.hass.callService("button", "press", { entity_id: e });
@@ -1704,7 +1696,7 @@ var Ye = class extends U {
 		} catch (e) {
 			this._error = e instanceof Error ? e.message : Y(this.hass, "dialog.command_failed");
 		} finally {
-			this._busy = !1, this._armedKey = void 0, this._refresh();
+			this._busy = !1, this._armedKey = void 0;
 		}
 	}
 	_switch(e, t) {
@@ -2450,5 +2442,5 @@ function ut() {
 		2500
 	]) window.setTimeout(() => lt(), e);
 }
-nt(), ct(), ut(), console.info("%c XIAOMI-KETTLE-CARD %c 0.1.1 ", "color:white;background:#03a9f4;font-weight:700", "color:#03a9f4;background:transparent");
+nt(), ct(), ut(), console.info("%c XIAOMI-KETTLE-CARD %c 0.1.2 ", "color:white;background:#03a9f4;font-weight:700", "color:#03a9f4;background:transparent");
 //#endregion

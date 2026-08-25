@@ -73,7 +73,7 @@ The helper device includes:
 - Xiaomi reminder, lift-memory, custom-knob, and do-not-disturb settings
 - Kettle cycle event entity
 
-Notification transition types can be changed from the integration's **Configure** button. Notifications appear only in Home Assistant's sidebar and are edge-triggered, so a boiling or finished message is created once per state transition rather than on every poll. Kettle state is refreshed automatically every second and the interval is intentionally not configurable.
+Notification transition types can be changed from the integration's **Configure** button. Notifications appear only in Home Assistant's sidebar and are edge-triggered, so a boiling or finished message is created once per state transition. Kettle status updates automatically whenever Xiaomi Miot publishes a change.
 
 ## Dashboard card
 

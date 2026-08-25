@@ -3,7 +3,6 @@ export const EDITOR_TAG = 'xiaomi-kettle-card-editor';
 export const CONTENT_TAG = 'xiaomi-kettle-dialog-content';
 export const REPOSITORY_URL = 'https://github.com/qweritos/hass-xiaomi-kettle';
 export const SUPPORTED_MODELS = new Set(['yunmi.kettle.v19']);
-export const DEFAULT_POLL_INTERVAL = 5;
 export const ARM_TIMEOUT = 1_000;
 
 export const ENTITY_SUFFIXES = {
